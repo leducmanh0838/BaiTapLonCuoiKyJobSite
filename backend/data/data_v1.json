@@ -1,0 +1,890 @@
+[
+{
+  "model": "auth.permission",
+  "pk": 1,
+  "fields": {
+    "name": "Can add log entry",
+    "content_type": 1,
+    "codename": "add_logentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 2,
+  "fields": {
+    "name": "Can change log entry",
+    "content_type": 1,
+    "codename": "change_logentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 3,
+  "fields": {
+    "name": "Can delete log entry",
+    "content_type": 1,
+    "codename": "delete_logentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 4,
+  "fields": {
+    "name": "Can view log entry",
+    "content_type": 1,
+    "codename": "view_logentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 5,
+  "fields": {
+    "name": "Can add permission",
+    "content_type": 2,
+    "codename": "add_permission"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 6,
+  "fields": {
+    "name": "Can change permission",
+    "content_type": 2,
+    "codename": "change_permission"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 7,
+  "fields": {
+    "name": "Can delete permission",
+    "content_type": 2,
+    "codename": "delete_permission"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 8,
+  "fields": {
+    "name": "Can view permission",
+    "content_type": 2,
+    "codename": "view_permission"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 9,
+  "fields": {
+    "name": "Can add group",
+    "content_type": 3,
+    "codename": "add_group"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 10,
+  "fields": {
+    "name": "Can change group",
+    "content_type": 3,
+    "codename": "change_group"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 11,
+  "fields": {
+    "name": "Can delete group",
+    "content_type": 3,
+    "codename": "delete_group"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 12,
+  "fields": {
+    "name": "Can view group",
+    "content_type": 3,
+    "codename": "view_group"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 13,
+  "fields": {
+    "name": "Can add content type",
+    "content_type": 4,
+    "codename": "add_contenttype"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 14,
+  "fields": {
+    "name": "Can change content type",
+    "content_type": 4,
+    "codename": "change_contenttype"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 15,
+  "fields": {
+    "name": "Can delete content type",
+    "content_type": 4,
+    "codename": "delete_contenttype"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 16,
+  "fields": {
+    "name": "Can view content type",
+    "content_type": 4,
+    "codename": "view_contenttype"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 17,
+  "fields": {
+    "name": "Can add session",
+    "content_type": 5,
+    "codename": "add_session"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 18,
+  "fields": {
+    "name": "Can change session",
+    "content_type": 5,
+    "codename": "change_session"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 19,
+  "fields": {
+    "name": "Can delete session",
+    "content_type": 5,
+    "codename": "delete_session"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 20,
+  "fields": {
+    "name": "Can view session",
+    "content_type": 5,
+    "codename": "view_session"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 21,
+  "fields": {
+    "name": "Can add user",
+    "content_type": 6,
+    "codename": "add_user"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 22,
+  "fields": {
+    "name": "Can change user",
+    "content_type": 6,
+    "codename": "change_user"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 23,
+  "fields": {
+    "name": "Can delete user",
+    "content_type": 6,
+    "codename": "delete_user"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 24,
+  "fields": {
+    "name": "Can view user",
+    "content_type": 6,
+    "codename": "view_user"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 25,
+  "fields": {
+    "name": "Can add cv",
+    "content_type": 7,
+    "codename": "add_cv"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 26,
+  "fields": {
+    "name": "Can change cv",
+    "content_type": 7,
+    "codename": "change_cv"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 27,
+  "fields": {
+    "name": "Can delete cv",
+    "content_type": 7,
+    "codename": "delete_cv"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 28,
+  "fields": {
+    "name": "Can view cv",
+    "content_type": 7,
+    "codename": "view_cv"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 29,
+  "fields": {
+    "name": "Can add job posting",
+    "content_type": 8,
+    "codename": "add_jobposting"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 30,
+  "fields": {
+    "name": "Can change job posting",
+    "content_type": 8,
+    "codename": "change_jobposting"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 31,
+  "fields": {
+    "name": "Can delete job posting",
+    "content_type": 8,
+    "codename": "delete_jobposting"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 32,
+  "fields": {
+    "name": "Can view job posting",
+    "content_type": 8,
+    "codename": "view_jobposting"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 33,
+  "fields": {
+    "name": "Can add application",
+    "content_type": 9,
+    "codename": "add_application"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 34,
+  "fields": {
+    "name": "Can change application",
+    "content_type": 9,
+    "codename": "change_application"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 35,
+  "fields": {
+    "name": "Can delete application",
+    "content_type": 9,
+    "codename": "delete_application"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 36,
+  "fields": {
+    "name": "Can view application",
+    "content_type": 9,
+    "codename": "view_application"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 37,
+  "fields": {
+    "name": "Can add application",
+    "content_type": 10,
+    "codename": "add_application"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 38,
+  "fields": {
+    "name": "Can change application",
+    "content_type": 10,
+    "codename": "change_application"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 39,
+  "fields": {
+    "name": "Can delete application",
+    "content_type": 10,
+    "codename": "delete_application"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 40,
+  "fields": {
+    "name": "Can view application",
+    "content_type": 10,
+    "codename": "view_application"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 41,
+  "fields": {
+    "name": "Can add access token",
+    "content_type": 11,
+    "codename": "add_accesstoken"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 42,
+  "fields": {
+    "name": "Can change access token",
+    "content_type": 11,
+    "codename": "change_accesstoken"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 43,
+  "fields": {
+    "name": "Can delete access token",
+    "content_type": 11,
+    "codename": "delete_accesstoken"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 44,
+  "fields": {
+    "name": "Can view access token",
+    "content_type": 11,
+    "codename": "view_accesstoken"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 45,
+  "fields": {
+    "name": "Can add grant",
+    "content_type": 12,
+    "codename": "add_grant"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 46,
+  "fields": {
+    "name": "Can change grant",
+    "content_type": 12,
+    "codename": "change_grant"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 47,
+  "fields": {
+    "name": "Can delete grant",
+    "content_type": 12,
+    "codename": "delete_grant"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 48,
+  "fields": {
+    "name": "Can view grant",
+    "content_type": 12,
+    "codename": "view_grant"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 49,
+  "fields": {
+    "name": "Can add refresh token",
+    "content_type": 13,
+    "codename": "add_refreshtoken"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 50,
+  "fields": {
+    "name": "Can change refresh token",
+    "content_type": 13,
+    "codename": "change_refreshtoken"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 51,
+  "fields": {
+    "name": "Can delete refresh token",
+    "content_type": 13,
+    "codename": "delete_refreshtoken"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 52,
+  "fields": {
+    "name": "Can view refresh token",
+    "content_type": 13,
+    "codename": "view_refreshtoken"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 53,
+  "fields": {
+    "name": "Can add id token",
+    "content_type": 14,
+    "codename": "add_idtoken"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 54,
+  "fields": {
+    "name": "Can change id token",
+    "content_type": 14,
+    "codename": "change_idtoken"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 55,
+  "fields": {
+    "name": "Can delete id token",
+    "content_type": 14,
+    "codename": "delete_idtoken"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 56,
+  "fields": {
+    "name": "Can view id token",
+    "content_type": 14,
+    "codename": "view_idtoken"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 1,
+  "fields": {
+    "app_label": "admin",
+    "model": "logentry"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 2,
+  "fields": {
+    "app_label": "auth",
+    "model": "permission"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 3,
+  "fields": {
+    "app_label": "auth",
+    "model": "group"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 4,
+  "fields": {
+    "app_label": "contenttypes",
+    "model": "contenttype"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 5,
+  "fields": {
+    "app_label": "sessions",
+    "model": "session"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 6,
+  "fields": {
+    "app_label": "app",
+    "model": "user"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 7,
+  "fields": {
+    "app_label": "app",
+    "model": "cv"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 8,
+  "fields": {
+    "app_label": "app",
+    "model": "jobposting"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 9,
+  "fields": {
+    "app_label": "app",
+    "model": "application"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 10,
+  "fields": {
+    "app_label": "oauth2_provider",
+    "model": "application"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 11,
+  "fields": {
+    "app_label": "oauth2_provider",
+    "model": "accesstoken"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 12,
+  "fields": {
+    "app_label": "oauth2_provider",
+    "model": "grant"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 13,
+  "fields": {
+    "app_label": "oauth2_provider",
+    "model": "refreshtoken"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 14,
+  "fields": {
+    "app_label": "oauth2_provider",
+    "model": "idtoken"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "4gzd7x4pg37o505ginuexpgn3c4g16vz",
+  "fields": {
+    "session_data": ".eJxVjDsOwjAQBe_iGlmx81mbkp4zWG_tNQ6gRIqTCnF3iJQC2jcz76UCtrWErcoSxqTOyqjT78aID5l2kO6YbrOO87QuI-td0Qet-joneV4O9--goJZvLR3Q0pD7PrbOx0zE5IzxEbbNNsE7SGNAPdzAvhuYMtgRuQbei2X1_gDsLjgd:1us40U:bx70_YgnSQb_z-nBpruycfVaGZeVQWPV0R4DR7OCh1s",
+    "expire_date": "2025-09-12T18:39:26.031Z"
+  }
+},
+{
+  "model": "app.user",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$gqDcjjSOtvpgPhrArJavwF$NqvxUJyQsLUzBUeONr+xFEJVnJ52cIG/mDHTMnEvyew=",
+    "last_login": "2025-08-29T18:39:26.027Z",
+    "is_superuser": true,
+    "username": "admin",
+    "first_name": "",
+    "last_name": "",
+    "email": "admin@gmail.com",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2025-08-29T18:39:03.698Z",
+    "role": "CANDIDATE",
+    "avatar": null,
+    "phone": null,
+    "address": null,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "app.user",
+  "pk": 2,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$gqDcjjSOtvpgPhrArJavwF$NqvxUJyQsLUzBUeONr+xFEJVnJ52cIG/mDHTMnEvyew=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "c1",
+    "first_name": "",
+    "last_name": "",
+    "email": "c1@example.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-08-29T18:42:43.623Z",
+    "role": "CANDIDATE",
+    "avatar": null,
+    "phone": "0900000001",
+    "address": "Địa chỉ ứng viên 1",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "app.user",
+  "pk": 3,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$Dfa0ldZNcxpyBMuaqTEUnw$drHYFK9fuehOK1KXaBZT95cnG5erZAiwj56Ks0skfQk=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "e1",
+    "first_name": "",
+    "last_name": "",
+    "email": "e1@example.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-08-29T18:42:43.987Z",
+    "role": "EMPLOYER",
+    "avatar": null,
+    "phone": "0900000001",
+    "address": "Địa chỉ ứng viên 1",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "app.user",
+  "pk": 4,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$vwGHMP2oaqkYxi4bf2MX2S$OjFZK5m6uwsUcbduenGID7kjsjrmduADZEPZUKILym4=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "e2",
+    "first_name": "",
+    "last_name": "",
+    "email": "e2@example.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-08-29T18:42:44.366Z",
+    "role": "EMPLOYER",
+    "avatar": null,
+    "phone": "0900000002",
+    "address": "Địa chỉ ứng viên 2",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "app.user",
+  "pk": 5,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$pyHL46GaQMw2H5z5jLplgA$2NJke4mTpdwyCL5/47nr78DhU39t+59XVv9/qsf4bY0=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "e3",
+    "first_name": "",
+    "last_name": "",
+    "email": "e3@example.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-08-29T18:42:44.753Z",
+    "role": "EMPLOYER",
+    "avatar": null,
+    "phone": "0900000003",
+    "address": "Địa chỉ ứng viên 3",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "app.user",
+  "pk": 6,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$5lepwyDsDKzJQTfrafaspz$1a/CMCzP8ARTAhtrNe00/34OArF+jo1nD1BGBkuU+8g=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "c2",
+    "first_name": "",
+    "last_name": "",
+    "email": "c2@example.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-08-29T18:42:45.150Z",
+    "role": "CANDIDATE",
+    "avatar": null,
+    "phone": "0900000002",
+    "address": "Địa chỉ ứng viên 2",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "app.user",
+  "pk": 7,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$i4BdpE86RndXEVCyYrMg7y$wB1KEGoc1Nf/fS7lQbJRd7SKTGLj83VTBdX27QB5wkc=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "c3",
+    "first_name": "",
+    "last_name": "",
+    "email": "c3@example.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-08-29T18:42:45.547Z",
+    "role": "CANDIDATE",
+    "avatar": null,
+    "phone": "0900000003",
+    "address": "Địa chỉ ứng viên 3",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "oauth2_provider.application",
+  "pk": 1,
+  "fields": {
+    "client_id": "SEp2JuNIlnEFTlubE4dqzyeooXD5p6Ib9qnxXAiP",
+    "user": 1,
+    "redirect_uris": "",
+    "post_logout_redirect_uris": "",
+    "client_type": "confidential",
+    "authorization_grant_type": "password",
+    "client_secret": "pbkdf2_sha256$1000000$CdWkxNtd1euqKxDJ6LTHmt$Ah3OOMgWsHSsJxUiKTrLwDuGMUsXftt0qrDE89mU6XU=",
+    "hash_client_secret": true,
+    "name": "App",
+    "skip_authorization": false,
+    "created": "2025-08-29T18:39:59.907Z",
+    "updated": "2025-08-29T18:39:59.907Z",
+    "algorithm": "",
+    "allowed_origins": ""
+  }
+},
+{
+  "model": "oauth2_provider.accesstoken",
+  "pk": 1,
+  "fields": {
+    "user": 1,
+    "source_refresh_token": null,
+    "token": "0w9pG8es2FTTV825TlGp6oJMTHHIUD",
+    "token_checksum": "09c3769de11a986ad1cab66b489f921b5ad1313fea42dfc22553f2f9e8962518",
+    "id_token": null,
+    "application": 1,
+    "expires": "2025-08-30T04:44:30.786Z",
+    "scope": "read write",
+    "created": "2025-08-29T18:44:30.786Z",
+    "updated": "2025-08-29T18:44:30.786Z"
+  }
+},
+{
+  "model": "oauth2_provider.accesstoken",
+  "pk": 2,
+  "fields": {
+    "user": 2,
+    "source_refresh_token": null,
+    "token": "9sNVebMNG3kSWaKJyaIxYiWkH7HtMO",
+    "token_checksum": "5ecba0e4998543dcdb968668d5440cc6bc8194afd9c38c61a9c73383779454f3",
+    "id_token": null,
+    "application": 1,
+    "expires": "2025-08-30T04:44:36.509Z",
+    "scope": "read write",
+    "created": "2025-08-29T18:44:36.509Z",
+    "updated": "2025-08-29T18:44:36.509Z"
+  }
+},
+{
+  "model": "oauth2_provider.accesstoken",
+  "pk": 3,
+  "fields": {
+    "user": 3,
+    "source_refresh_token": null,
+    "token": "UhQDMs9ykjIabq5oYUA8YtTQGtoYvv",
+    "token_checksum": "7558c053eee855eb1ff4a57a26cbed01b10b55d5bc2dc289ddba887c376188e4",
+    "id_token": null,
+    "application": 1,
+    "expires": "2025-08-30T04:44:54.789Z",
+    "scope": "read write",
+    "created": "2025-08-29T18:44:54.789Z",
+    "updated": "2025-08-29T18:44:54.789Z"
+  }
+},
+{
+  "model": "oauth2_provider.refreshtoken",
+  "pk": 1,
+  "fields": {
+    "user": 1,
+    "token": "5UqRsfseoXZVjXCKsl0vErrlC5TSDG",
+    "application": 1,
+    "access_token": 1,
+    "token_family": "9afa68cc-95f6-41f0-bab7-e7ed2d021af5",
+    "created": "2025-08-29T18:44:30.788Z",
+    "updated": "2025-08-29T18:44:30.788Z",
+    "revoked": null
+  }
+},
+{
+  "model": "oauth2_provider.refreshtoken",
+  "pk": 2,
+  "fields": {
+    "user": 2,
+    "token": "6BK2wvWmnU2fxGGtYgpsJ7dOMhxl53",
+    "application": 1,
+    "access_token": 2,
+    "token_family": "053f6a17-a896-4fa6-a8fa-3d341402b3ba",
+    "created": "2025-08-29T18:44:36.511Z",
+    "updated": "2025-08-29T18:44:36.511Z",
+    "revoked": null
+  }
+},
+{
+  "model": "oauth2_provider.refreshtoken",
+  "pk": 3,
+  "fields": {
+    "user": 3,
+    "token": "lXvxLuvtJgvGnTDsvkAuQXHbtgHF0C",
+    "application": 1,
+    "access_token": 3,
+    "token_family": "6fe02ac0-1c11-4286-a0bb-abf0f36b4f75",
+    "created": "2025-08-29T18:44:54.791Z",
+    "updated": "2025-08-29T18:44:54.791Z",
+    "revoked": null
+  }
+}
+]
