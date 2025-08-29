@@ -15,7 +15,7 @@ class TimeStampedModel(models.Model):
 class User(AbstractUser):
     class UserRole(models.TextChoices):
         CANDIDATE = 'CANDIDATE', 'Ứng viên'
-        RECRUITER = 'RECRUITER', 'Nhà tuyển dụng'
+        EMPLOYER = 'EMPLOYER', 'Nhà tuyển dụng'
 
     role = models.CharField(
         max_length=20,
@@ -24,6 +24,8 @@ class User(AbstractUser):
     )
 
     avatar = models.URLField(null=True, blank=True)
+    phone = models.CharField(max_length=15, null=True)
+    address = models.CharField(max_length=500, null=True)
 
     def __str__(self):
         return self.username

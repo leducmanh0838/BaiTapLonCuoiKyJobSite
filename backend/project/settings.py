@@ -14,11 +14,13 @@ from pathlib import Path
 
 import cloudinary
 import pymysql
+from dotenv import load_dotenv
 
 pymysql.install_as_MySQLdb()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+load_dotenv(os.path.join(BASE_DIR, '.env'))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
@@ -82,7 +84,7 @@ DATABASES = {
         'NAME': os.getenv('DB_NAME'),
         'USER': os.getenv('DB_USER'),
         'PASSWORD': os.getenv('DB_PASSWORD'),
-        'HOST': os.getenv('DB_HOST'),
+        'HOST': '',
     }
 }
 
@@ -138,15 +140,15 @@ REST_FRAMEWORK = {
     )
 }
 
-DOT_CLIENT_ID='SEp2JuNIlnEFTlubE4dqzyeooXD5p6Ib9qnxXAiP'
-DOT_CLIENT_SECRET='ihTPbzAVwlfvV37B9pZ3ULEvs3RRm1R2uPEVLWhAJAJS3cVaM1HQW92xAWXuk4pWy8mrFSoqLYHqtN1qO2NzPlUclcwmi1z2m48zx6vvBnQB46iDJSrzi7Gtdn0GOkH7'
+DOT_CLIENT_ID = 'SEp2JuNIlnEFTlubE4dqzyeooXD5p6Ib9qnxXAiP'
+DOT_CLIENT_SECRET = 'ihTPbzAVwlfvV37B9pZ3ULEvs3RRm1R2uPEVLWhAJAJS3cVaM1HQW92xAWXuk4pWy8mrFSoqLYHqtN1qO2NzPlUclcwmi1z2m48zx6vvBnQB46iDJSrzi7Gtdn0GOkH7'
 
 # Thư mục lưu file upload
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 MEDIA_URL = "/media/"
 
-MEGA_PASSWORD="QLDAPM@Manh*123"
-MEGA_EMAIL="2251012090manh@ou.edu.vn"
+MEGA_PASSWORD = os.getenv('MEGA_PASSWORD')
+MEGA_EMAIL = os.getenv('MEGA_EMAIL')
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
@@ -155,3 +157,4 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
