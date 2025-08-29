@@ -79,10 +79,10 @@ WSGI_APPLICATION = 'project.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'jobsite',
-        'USER': 'root',
-        'PASSWORD': 'Admin@123',
-        'HOST': '',
+        'NAME': os.getenv('DB_NAME'),
+        'USER': os.getenv('DB_USER'),
+        'PASSWORD': os.getenv('DB_PASSWORD'),
+        'HOST': os.getenv('DB_HOST'),
     }
 }
 
@@ -144,3 +144,14 @@ DOT_CLIENT_SECRET='ihTPbzAVwlfvV37B9pZ3ULEvs3RRm1R2uPEVLWhAJAJS3cVaM1HQW92xAWXuk
 # Thư mục lưu file upload
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 MEDIA_URL = "/media/"
+
+MEGA_PASSWORD="QLDAPM@Manh*123"
+MEGA_EMAIL="2251012090manh@ou.edu.vn"
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
