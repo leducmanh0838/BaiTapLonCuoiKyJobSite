@@ -16,7 +16,7 @@ class JobPostingSerializer(serializers.ModelSerializer):
 
 class JobPostingApplicationSerializer(serializers.ModelSerializer):
     cv_owner = UserAvatarAndName(source="cv.owner", read_only=True)
-    cv_file = serializers.URLField(source="cv.file", read_only=True)
+    cv_file = serializers.SerializerMethodField()
 
     class Meta:
         model = Application
@@ -30,3 +30,10 @@ class JobPostingApplicationSerializer(serializers.ModelSerializer):
             "status",
         ]
         read_only_fields = ["id", "job_posting", "cv", "is_cancel"]
+
+    def get_cv_file(self, obj):
+        request = self.context.get("request")
+        if obj.cv.file and hasattr(obj.cv.file, "url"):
+            url = obj.cv.file.url
+            return request.build_absolute_uri(url) if request else url
+        return None

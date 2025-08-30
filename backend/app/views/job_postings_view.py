@@ -32,13 +32,16 @@ class JobPostingViewSet(mixins.ListModelMixin,
     def get_queryset(self):
         queryset = super().get_queryset()
 
-        title = self.request.query_params.get("title")
+        keyword = self.request.query_params.get("keyword")
         city_code = self.request.query_params.get("city_code")
+        owner_id = self.request.query_params.get("owner_id")
 
-        if title:
-            queryset = queryset.filter(title__icontains=title)  # tìm gần đúng
+        if keyword:
+            queryset = queryset.filter(title__icontains=keyword)  # tìm gần đúng
         if city_code:
             queryset = queryset.filter(city_code=city_code)  # chính xác
+        if owner_id:
+            queryset = queryset.filter(owner_id=owner_id)
 
         return queryset
 
@@ -69,4 +72,3 @@ class JobPostingApplicationViewSet(mixins.ListModelMixin,
     def get_queryset(self):
         job_posting_id = self.kwargs['job_posting_pk']
         return Application.objects.filter(job_posting_id=job_posting_id)
-

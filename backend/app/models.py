@@ -1,5 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from rest_framework.exceptions import ValidationError
 
 
 # Create your models here.
@@ -31,11 +32,18 @@ class User(AbstractUser):
         return self.username
 
 
+def validate_pdf(file):
+    if not file.name.endswith('.pdf'):
+        raise ValidationError("Chỉ được upload file PDF.")
+    if hasattr(file, "content_type") and file.content_type != 'application/pdf':
+        raise ValidationError("File phải có định dạng PDF.")
+
+
 class CV(TimeStampedModel):
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='cvs')
     title = models.CharField(max_length=255)
     summary = models.TextField()
-    file = models.URLField()
+    file = models.FileField(upload_to="cvs/", validators=[validate_pdf])
 
 
 class JobPosting(TimeStampedModel):

@@ -3,7 +3,6 @@ import cloudinary.uploader
 
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
-from mega import Mega
 from rest_framework.exceptions import ValidationError
 
 

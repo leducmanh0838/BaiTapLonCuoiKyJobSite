@@ -139,10 +139,6 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     )
 }
-
-DOT_CLIENT_ID = 'SEp2JuNIlnEFTlubE4dqzyeooXD5p6Ib9qnxXAiP'
-DOT_CLIENT_SECRET = 'ihTPbzAVwlfvV37B9pZ3ULEvs3RRm1R2uPEVLWhAJAJS3cVaM1HQW92xAWXuk4pWy8mrFSoqLYHqtN1qO2NzPlUclcwmi1z2m48zx6vvBnQB46iDJSrzi7Gtdn0GOkH7'
-
 # Thư mục lưu file upload
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 MEDIA_URL = "/media/"
@@ -158,3 +154,14 @@ EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
+cloudinary.config(
+    cloud_name=os.getenv('CLOUDINARY_CLOUD_NAME'),
+    api_key=os.getenv('CLOUDINARY_API_KEY'),
+    api_secret=os.getenv('CLOUDINARY_API_SECRET')
+)
+
+GOOGLE_WEB_CLIENT_ID = os.getenv('GOOGLE_WEB_CLIENT_ID')
+GOOGLE_WEB_CLIENT_SECRET = os.getenv('GOOGLE_WEB_CLIENT_SECRET')
+
+FACEBOOK_APP_ID = os.getenv('FACEBOOK_APP_ID')
+FACEBOOK_APP_SECRET = os.getenv('FACEBOOK_APP_SECRET')
