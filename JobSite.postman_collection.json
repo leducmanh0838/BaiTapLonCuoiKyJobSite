@@ -248,11 +248,114 @@
 		},
 		{
 			"name": "cvs/",
-			"item": []
+			"item": [
+				{
+					"name": "list cvs",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{candidate-token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": []
+						},
+						"url": "{{base-url}}api/cvs/"
+					},
+					"response": []
+				},
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{candidate-token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title",
+									"value": "title",
+									"type": "text"
+								},
+								{
+									"key": "summary",
+									"value": "summary",
+									"type": "text"
+								},
+								{
+									"key": "upload_file",
+									"type": "file",
+									"src": "/C:/LeDucManh/Project/QuanLyDuAnPhanMem/BaiTapLonCuoiKyJobSite/các file ảnh và pdf/cv/1.pdf"
+								}
+							]
+						},
+						"url": "{{base-url}}api/cvs/"
+					},
+					"response": []
+				}
+			]
 		},
 		{
 			"name": "applications",
-			"item": []
+			"item": [
+				{
+					"name": "list",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{candidate-token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": []
+						},
+						"url": "{{base-url}}api/cvs/"
+					},
+					"response": []
+				},
+				{
+					"name": "detail",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{candidate-token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": []
+						},
+						"url": "{{base-url}}api/cvs/"
+					},
+					"response": []
+				}
+			]
 		},
 		{
 			"name": "Get Token By Login",
@@ -285,7 +388,7 @@
 								},
 								{
 									"key": "username",
-									"value": "c1",
+									"value": "a1",
 									"type": "text"
 								},
 								{
