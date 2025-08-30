@@ -1,15 +1,4 @@
-import os
-import django
-
-# Khởi tạo Django environment
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "project.settings")  # đổi tên_project thành tên project của bạn
-django.setup()
-
-from django.contrib.auth import get_user_model
-
-User = get_user_model()
-
-def main():
+def user():
     # Tạo 3 ứng viên
     for i in range(1, 4):
         username = f"c{i}"
@@ -50,4 +39,25 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    import os
+    import django
+
+    # Khởi tạo Django environment
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "project.settings")  # đổi tên_project thành tên project của bạn
+    django.setup()
+
+    from django.contrib.auth import get_user_model
+
+    User = get_user_model()
+    from app.models import Application, CV, JobPosting
+
+    job_posting = JobPosting.objects.get(id=9)
+
+    for cv_id in range(1, 11):  # CV id từ 1 đến 10
+        cv = CV.objects.get(id=cv_id)
+        Application.objects.create(
+            job_posting=job_posting,
+            owner=cv.owner,  # lấy user từ CV
+        )
+    print("Đã tạo xong 10 Application cho job_posting=10")
+
