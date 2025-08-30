@@ -40,7 +40,7 @@ class CV(TimeStampedModel):
 
 class JobPosting(TimeStampedModel):
     is_active = models.BooleanField(default=True)
-    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='jobs')
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='job_postings')
     title = models.CharField(max_length=100)
     description = models.TextField()
     image = models.URLField()
@@ -58,8 +58,8 @@ class Application(TimeStampedModel):
         HIRED = 'HIRED', 'Trúng tuyển'
         REJECTED = 'REJECTED', 'Từ chối'
 
-    job = models.ForeignKey(JobPosting, on_delete=models.CASCADE, related_name='applications')
-    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='applications')
+    job_posting = models.ForeignKey(JobPosting, on_delete=models.CASCADE, related_name='applications')
+    cv = models.ForeignKey(CV, on_delete=models.CASCADE, related_name='applications')
     is_cancel = models.BooleanField(default=False)
     status = models.CharField(
         max_length=20,
