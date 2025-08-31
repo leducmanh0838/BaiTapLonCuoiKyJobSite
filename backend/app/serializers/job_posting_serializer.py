@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from app.models import JobPosting, Application
-from app.serializers.user_serializer import UserAvatarAndName
+from app.serializers.user_serializer import UserAvatarAndNameSerializer
 
 
 class JobPostingSerializer(serializers.ModelSerializer):
@@ -15,7 +15,7 @@ class JobPostingSerializer(serializers.ModelSerializer):
 
 
 class JobPostingApplicationSerializer(serializers.ModelSerializer):
-    cv_owner = UserAvatarAndName(source="cv.owner", read_only=True)
+    cv_owner = UserAvatarAndNameSerializer(source="cv.owner", read_only=True)
     cv_file = serializers.SerializerMethodField()
 
     class Meta:
