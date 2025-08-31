@@ -1,5 +1,8 @@
 import tempfile
+from io import BytesIO
+
 import cloudinary.uploader
+import requests
 
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
@@ -77,3 +80,15 @@ def upload_image(request):
         file_link = request.build_absolute_uri(my_file_link)
 
     return file_link
+
+
+def upload_avatar_to_cloudinary(avatar_url):
+    # Tải ảnh từ Facebook
+    response = requests.get(avatar_url)
+    if response.status_code == 200:
+        image_data = BytesIO(response.content)
+
+        # Upload lên Cloudinary
+        result = cloudinary.uploader.upload(image_data, folder="avatars/")
+        return result.get("secure_url")
+    return None
