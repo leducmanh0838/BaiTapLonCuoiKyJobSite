@@ -1,3 +1,4 @@
+from cloudinary.models import CloudinaryField
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from rest_framework.exceptions import ValidationError
@@ -51,7 +52,7 @@ class JobPosting(TimeStampedModel):
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='job_postings')
     title = models.CharField(max_length=100)
     description = models.TextField()
-    image = models.URLField()
+    image = CloudinaryField(null=True, blank=True)
     salary = models.CharField(max_length=50)
     experience = models.CharField(max_length=50)
     address = models.CharField(max_length=500)
