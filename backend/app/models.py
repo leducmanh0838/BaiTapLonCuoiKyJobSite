@@ -1,9 +1,14 @@
+from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.utils.module_loading import import_string
 from rest_framework.exceptions import ValidationError
 
 
 # Create your models here.
+def get_dynamic_storage():
+    storage_class = import_string(settings.DEFAULT_FILE_STORAGE)
+    return storage_class()
 
 class TimeStampedModel(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, editable=False)
@@ -24,9 +29,13 @@ class User(AbstractUser):
         default=UserRole.CANDIDATE
     )
 
-    avatar = models.URLField(null=True, blank=True)
+    # avatar = models.URLField(null=True, blank=True)
+    avatar = models.ImageField(
+        upload_to="avatars/",
+        storage=get_dynamic_storage,
+        null=True
+    )
     phone = models.CharField(max_length=15, null=True)
-    address = models.CharField(max_length=500, null=True)
 
     def __str__(self):
         return self.username
@@ -49,9 +58,14 @@ class CV(TimeStampedModel):
 class JobPosting(TimeStampedModel):
     is_active = models.BooleanField(default=True)
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='job_postings')
+    company_name = models.CharField(max_length=100)
     title = models.CharField(max_length=100)
     description = models.TextField()
-    image = models.URLField()
+    image = models.ImageField(
+        upload_to="job-postings/",
+        storage=get_dynamic_storage,
+        null=True
+    )
     salary = models.CharField(max_length=50)
     experience = models.CharField(max_length=50)
     address = models.CharField(max_length=500)

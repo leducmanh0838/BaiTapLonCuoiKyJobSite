@@ -2,9 +2,6 @@ import axios from "axios"
 import { BASE_URL } from "./env";
 import cookie from "react-cookies"
 /*
-LƯU Ý!!!
-Không được tự ý sửa code này, nếu sửa code thì ảnh hưởng chung đến dự án
-Nếu có lỗi thì nhớ nhắn với Lê Đức Mạnh
 Cách gọi:
 gọi lấy danh sách GET cvs/: Apis.get(endpoints.cvs.list)
 gọi lấy chi tiết GET cvs/{id}: Apis.get(endpoints.cvs.detail(id))
@@ -17,7 +14,15 @@ export const endpoints = {
     auth: {
         googleLogin: 'api/auth/google-login/',
         facebookLogin: 'api/auth/facebook-login/',
+        googleRegister: 'api/auth/google-register/',
+        facebookRegister: 'api/auth/facebook-register/',
+        verifyFacebook: 'api/auth/verify-facebook/',
+        verifyGoogle: 'api/auth/verify-google/',
         token: 'o/token/',
+    },
+    user: {
+        currentUser: 'api/users/current-user/',
+        list:'api/users/',
     },
     cvs: {
         list: 'api/cvs/',
@@ -27,7 +32,7 @@ export const endpoints = {
         list: 'api/applications/',
         detail: (id) => `api/applications/${id}/`,
     },
-    jobPosting: {
+    jobPostings: {
         list: 'api/job-postings/',
         detail: (id) => `api/job-postings/${id}/`,
         applications: {

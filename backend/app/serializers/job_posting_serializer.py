@@ -11,7 +11,7 @@ class JobPostingSerializer(serializers.ModelSerializer):
                   "description", "image", "salary",
                   "experience", "address", "city_code",
                   "deadline"]
-        read_only_fields = ["id", "is_active", "owner", "image"]
+        read_only_fields = ["id", "is_active", "owner"]
 
 
 class JobPostingApplicationSerializer(serializers.ModelSerializer):
