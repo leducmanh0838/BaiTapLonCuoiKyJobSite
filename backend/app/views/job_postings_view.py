@@ -46,20 +46,20 @@ class JobPostingViewSet(mixins.ListModelMixin,
         return queryset
 
     def perform_create(self, serializer):
-        image_link = upload_image(self.request)
-        serializer.save(owner=self.request.user, image=image_link)
+        # image_link = upload_image(self.request)
+        serializer.save(owner=self.request.user)
 
-    def perform_update(self, serializer):
-        uploaded_file = self.request.FILES.get("upload_image")
-        if uploaded_file:
-            image_link = upload_image(self.request)
-            serializer.save(image=image_link)
-
-    def perform_partial_update(self, serializer):
-        uploaded_file = self.request.FILES.get("upload_image")
-        if uploaded_file:
-            image_link = upload_image(self.request)
-            serializer.save(image=image_link)
+    # def perform_update(self, serializer):
+    #     uploaded_file = self.request.FILES.get("upload_image")
+    #     if uploaded_file:
+    #         image_link = upload_image(self.request)
+    #         serializer.save(image=image_link)
+    #
+    # def perform_partial_update(self, serializer):
+    #     uploaded_file = self.request.FILES.get("upload_image")
+    #     if uploaded_file:
+    #         image_link = upload_image(self.request)
+    #         serializer.save(image=image_link)
 
 
 class JobPostingApplicationViewSet(mixins.ListModelMixin,
@@ -68,6 +68,7 @@ class JobPostingApplicationViewSet(mixins.ListModelMixin,
                         viewsets.GenericViewSet):
     serializer_class = JobPostingApplicationSerializer
     permission_classes = [IsJobPostingApplicationEmployer]
+    pagination_class = DefaultPagination
 
     def get_queryset(self):
         job_posting_id = self.kwargs['job_posting_pk']

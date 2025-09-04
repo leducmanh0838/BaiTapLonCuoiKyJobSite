@@ -44,11 +44,15 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'app',
     'oauth2_provider',
+    'corsheaders',
+    'cloudinary',
+    'cloudinary_storage',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -168,3 +172,12 @@ FACEBOOK_APP_SECRET = os.getenv('FACEBOOK_APP_SECRET')
 
 DOT_CLIENT_ID = os.getenv('DOT_CLIENT_ID')
 DOT_CLIENT_SECRET = os.getenv('DOT_CLIENT_SECRET')
+
+CORS_ALLOWED_ORIGINS = [
+    "http://127.0.0.1:3000",
+    "http://localhost:3000",
+]
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+# Nếu cloudinary
+# DEFAULT_FILE_STORAGE = "django.core.files.storage.FileSystemStorage"
