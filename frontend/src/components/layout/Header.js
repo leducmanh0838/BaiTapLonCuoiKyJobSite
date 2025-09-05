@@ -100,7 +100,7 @@ const Header = () => {
                             <HeaderMenuItem name="Quản lý hồ sơ ứng tuyển" path="/applications" icon={<FaFileAlt size={18} />} iconOutline={<FaRegFileAlt size={18} />} />
                         </>}
                         {currentUser?.role && currentUser.role === UserRole.EMPLOYER.value && <>
-                            <HeaderMenuItem name="Quản lý tin tuyển dụng" path="/job-postings" icon={<BsPostcardFill size={20} />} iconOutline={<BsPostcard size={20} />} />
+                            <HeaderMenuItem name="Quản lý tin tuyển dụng" path="/employer/job-postings" icon={<BsPostcardFill size={20} />} iconOutline={<BsPostcard size={20} />} />
                         </>}
                     </nav>
                     {currentUser?.role === getUserRoleByValue(UserRole.CANDIDATE.value) && <>

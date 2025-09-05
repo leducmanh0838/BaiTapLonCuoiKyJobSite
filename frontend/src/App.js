@@ -9,6 +9,7 @@ import Header from './components/layout/Header';
 import Sample1 from './components/Samples/Sample1';
 import Login from './components/Auth/Login';
 import Register from './components/Auth/Register';
+import JobPostingsManagement from './components/JobPostings/JobPostingsManagement';
 
 const App = () => {
 
@@ -37,6 +38,7 @@ const App = () => {
               <Route path="/sample1" element={<Sample1 />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
+              <Route path="/employer/job-postings/" element={<JobPostingsManagement />} />
             </Routes>
           </div>
         </div>
