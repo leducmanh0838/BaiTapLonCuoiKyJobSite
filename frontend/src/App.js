@@ -11,6 +11,8 @@ import Login from './components/Auth/Login';
 import Register from './components/Auth/Register';
 import CvManager from './components/Cv/CvManager';
 
+import JobPostingsManagement from './components/JobPostings/JobPostingsManagement';
+
 const App = () => {
 
   return (
@@ -39,6 +41,7 @@ const App = () => {
               <Route path="/sample1" element={<Sample1 />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
+              <Route path="/employer/job-postings/" element={<JobPostingsManagement />} />
             </Routes>
           </div>
         </div>

@@ -1,7 +1,10 @@
+
+
+
 const JobPostingList = () => {
-    return(<>
-    Giao diện trang chủ hiển thị danh sách công việc
+    return (<>
+    Danh sách các tin tuyển dụng hiển thị ở đây
     </>)
-}
+};
 
 export default JobPostingList;
