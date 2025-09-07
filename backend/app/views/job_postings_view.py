@@ -9,6 +9,7 @@ from app.paginations import DefaultPagination
 from app.permissions import IsOwner, IsEmployer, IsJobPostingApplicationEmployer
 from app.serializers.job_posting_serializer import JobPostingCreateSerializer, JobPostingApplicationSerializer, \
     JobPostingSerializer, JobPosingMessageSerializer
+from app.utils.email_utils import send_mail_async
 from app.utils.my_upload_file_util import upload_image
 
 
@@ -52,29 +53,64 @@ class JobPostingViewSet(mixins.ListModelMixin,
         if owner_id:
             queryset = queryset.filter(owner_id=owner_id)
 
-        return queryset
+        return queryset.order_by('-id')
 
     def perform_create(self, serializer):
         # image_link = upload_image(self.request)
         serializer.save(owner=self.request.user)
 
-    # def perform_update(self, serializer):
-    #     uploaded_file = self.request.FILES.get("upload_image")
-    #     if uploaded_file:
-    #         image_link = upload_image(self.request)
-    #         serializer.save(image=image_link)
-    #
-    # def perform_partial_update(self, serializer):
-    #     uploaded_file = self.request.FILES.get("upload_image")
-    #     if uploaded_file:
-    #         image_link = upload_image(self.request)
-    #         serializer.save(image=image_link)
+    @action(detail=True, methods=['post'], url_path='messages')
+    def send_messages(self, request, pk):
+        job_posting = self.get_object()
+        serializer = JobPosingMessageSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        message = serializer.validated_data['message']
+        statuses = serializer.validated_data.get('statuses')
+
+        applications = job_posting.applications.all()
+        if statuses:
+            applications = applications.filter(status__in=statuses)
+
+        results = []
+        for app in applications:
+            applicant = app.cv.owner
+            email = applicant.email
+
+            if email:
+                send_mail_async(
+                    subject=f"Thông báo từ {job_posting.company_name}",
+                    message=message,
+                    from_email=None,
+                    recipient_list=[email]
+                )
+                # send_mail(
+                #     subject=f"Thông báo từ {job_posting.company_name}",
+                #     message=message,
+                #     from_email=None,  # sẽ lấy DEFAULT_FROM_EMAIL
+                #     recipient_list=[email],
+                #     fail_silently=True  # nếu không muốn raise exception khi lỗi
+                # )
+
+            results.append({
+                "applicant_id": applicant.id,
+                "applicant_name": applicant.username,
+                "email": email,
+                "status": app.status,
+                # "message_sent": message
+            })
+
+        return Response({
+            "count": len(results),
+            "message": message,
+            "sent_to": results
+        }, status=status.HTTP_200_OK)
 
 
 class JobPostingApplicationViewSet(mixins.ListModelMixin,
-                        mixins.RetrieveModelMixin,
-                        mixins.UpdateModelMixin,
-                        viewsets.GenericViewSet):
+                                   mixins.RetrieveModelMixin,
+                                   mixins.UpdateModelMixin,
+                                   viewsets.GenericViewSet):
     serializer_class = JobPostingApplicationSerializer
     permission_classes = [IsJobPostingApplicationEmployer]
     pagination_class = DefaultPagination

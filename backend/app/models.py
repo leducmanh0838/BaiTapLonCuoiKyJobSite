@@ -89,6 +89,8 @@ class JobPosting(TimeStampedModel):
     experience = models.CharField(max_length=50)
     address = models.CharField(max_length=500)
     city_code = models.IntegerField()
+    district_code = models.IntegerField(null=True, blank=True)
+    ward_code = models.IntegerField(null=True, blank=True)
     deadline = models.DateTimeField()
 
     tags = models.ManyToManyField(Tag, related_name="job_postings", blank=True)

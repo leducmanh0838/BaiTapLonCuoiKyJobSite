@@ -1,3 +1,4 @@
+import bleach
 from rest_framework import serializers
 
 from app.models import JobPosting, Application, Tag
@@ -13,6 +14,7 @@ class JobPostingSerializer(serializers.ModelSerializer):
         fields = ["id", "is_active", "owner", "title",
                   "description", "image", "salary",
                   "experience", "address", "city_code",
+                  "district_code", "ward_code",
                   "deadline", "tags"]
         read_only_fields = ["id", "is_active", "owner"]
 
@@ -30,8 +32,28 @@ class JobPostingCreateSerializer(serializers.ModelSerializer):
         fields = ["id", "is_active", "owner", "title",
                   "description", "image", "salary",
                   "experience", "address", "city_code",
+                  "district_code", "ward_code",
                   "deadline", "tags"]
         read_only_fields = ["id", "is_active", "owner"]
+
+    def validate_description(self, value):
+        # Chỉ cho phép một số thẻ và thuộc tính HTML an toàn
+        allowed_tags = [
+            "p", "b", "i", "u", "em", "strong", "a",
+            "ul", "ol", "li", "br", "span"
+        ]
+        allowed_attrs = {
+            "a": ["href", "title", "target"],
+            "span": ["style"],
+        }
+
+        cleaned_value = bleach.clean(
+            value,
+            tags=allowed_tags,
+            attributes=allowed_attrs,
+            strip=True
+        )
+        return cleaned_value
 
     def create(self, validated_data):
         tags_data = validated_data.pop("tags", [])
