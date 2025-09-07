@@ -11,85 +11,130 @@ from django.core.files.base import ContentFile
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "project.settings")
 django.setup()
 
-from app.models import User, CV, JobPosting, Application
+# from app.models import User, CV, JobPosting, Application
+#
+#
+# def run():
+#     # Xoá dữ liệu cũ để test lại
+#     Application.objects.all().delete()
+#     JobPosting.objects.all().delete()
+#     CV.objects.all().delete()
+#     User.objects.exclude(is_superuser=True).delete()
+#
+#     # Tạo 3 ứng viên
+#     candidates = []
+#     for i in range(1, 4):
+#         user = User.objects.create_user(
+#             username=f"a{i}",
+#             password="123456",
+#             role=User.UserRole.CANDIDATE,
+#             email=f"a{i}@test.com"
+#         )
+#         candidates.append(user)
+#         print("Tạo ứng viên:", user.username)
+#
+#     # Tạo 3 nhà tuyển dụng
+#     employers = []
+#     for i in range(1, 4):
+#         user = User.objects.create_user(
+#             username=f"e{i}",
+#             password="123456",
+#             role=User.UserRole.EMPLOYER,
+#             email=f"e{i}@test.com"
+#         )
+#         employers.append(user)
+#         print("Tạo nhà tuyển dụng:", user.username)
+#
+#     # Mỗi ứng viên tạo 2 CV
+#     pdf_files = ["1.pdf", "2.pdf", "3.pdf"]  # danh sách file pdf thật có sẵn
+#     for candidate in candidates:
+#         for j in range(2):  # mỗi ứng viên tạo 2 CV
+#             pdf_path = os.path.join(os.path.dirname(__file__), pdf_files[j % len(pdf_files)])
+#             with open(pdf_path, "rb") as f:
+#                 cv = CV.objects.create(
+#                     owner=candidate,
+#                     title=f"CV {candidate.username} - {j + 1}",
+#                     summary="Demo CV content",
+#                     file=File(f, name=f"{candidate.username}_cv{j + 1}.pdf")
+#                 )
+#             print("Tạo CV:", cv.title)
+#
+#     # Tạo 10 jobposting
+#     job_postings = []
+#     for i in range(1, 11):
+#         employer = random.choice(employers)
+#         job = JobPosting.objects.create(
+#             is_active=True,
+#             owner=employer,
+#             title=f"Job {i} - {employer.username}",
+#             description="Mô tả công việc",
+#             image="https://placehold.co/600x400",
+#             salary=f"{random.randint(5,15)} triệu",
+#             experience="1-2 năm",
+#             address="Hà Nội",
+#             city_code=1,
+#             deadline=timezone.now() + timedelta(days=30)
+#         )
+#         job_postings.append(job)
+#         print("Tạo Job:", job.title)
+#
+#     # Tạo 10 application (ngẫu nhiên)
+#     cvs = list(CV.objects.all())
+#     for i in range(10):
+#         job = random.choice(job_postings)
+#         cv = random.choice(cvs)
+#         app = Application.objects.create(
+#             job_posting=job,
+#             cv=cv,
+#             status=random.choice([s[0] for s in Application.ApplicationStatus.choices])
+#         )
+#         print(f"Tạo Application: {cv.owner.username} nộp vào {job.title} - status={app.status}")
+#
+#
+# if __name__ == "__main__":
+#     User.objects.get(id=192).delete()
 
+# import random
+# from app.models import CV
+#
+# def main():
+#     pdf_files = [f"cvs/{i}.pdf" for i in range(1, 8)]
+#
+#     updates = []
+#     for cv in CV.objects.all():
+#         cv.file.name = random.choice(pdf_files)
+#         updates.append(cv)
+#
+#     CV.objects.bulk_update(updates, ["file"])
+#     print(f"✅ Đã cập nhật {len(updates)} CV với file ngẫu nhiên.")
+#
+# # Chạy khi gọi script
+# if __name__ == "__main__":
+#     main()
 
-def run():
-    # Xoá dữ liệu cũ để test lại
-    Application.objects.all().delete()
-    JobPosting.objects.all().delete()
-    CV.objects.all().delete()
-    User.objects.exclude(is_superuser=True).delete()
+from app.models import JobPosting, Tag
 
-    # Tạo 3 ứng viên
-    candidates = []
-    for i in range(1, 4):
-        user = User.objects.create_user(
-            username=f"a{i}",
-            password="123456",
-            role=User.UserRole.CANDIDATE,
-            email=f"a{i}@test.com"
-        )
-        candidates.append(user)
-        print("Tạo ứng viên:", user.username)
+def main():
+    # Lấy tag từ DB theo name + category
+    def get_tag(category, name):
+        return Tag.objects.get(category=category, name=name)
 
-    # Tạo 3 nhà tuyển dụng
-    employers = []
-    for i in range(1, 4):
-        user = User.objects.create_user(
-            username=f"e{i}",
-            password="123456",
-            role=User.UserRole.EMPLOYER,
-            email=f"e{i}@test.com"
-        )
-        employers.append(user)
-        print("Tạo nhà tuyển dụng:", user.username)
+    tags_to_add = [
+        get_tag(Tag.TagCategory.SKILL, "Giao tiếp"),
+        get_tag(Tag.TagCategory.SKILL, "Làm việc nhóm"),
+        get_tag(Tag.TagCategory.JOB_TYPE, "Full-time"),
+        get_tag(Tag.TagCategory.LEVEL, "Nhân viên"),
+        get_tag(Tag.TagCategory.BENEFIT, "Bảo hiểm"),
+        get_tag(Tag.TagCategory.BENEFIT, "Đào tạo"),
+        get_tag(Tag.TagCategory.BENEFIT, "Thưởng Tết"),
+    ]
 
-    # Mỗi ứng viên tạo 2 CV
-    pdf_files = ["1.pdf", "2.pdf", "3.pdf"]  # danh sách file pdf thật có sẵn
-    for candidate in candidates:
-        for j in range(2):  # mỗi ứng viên tạo 2 CV
-            pdf_path = os.path.join(os.path.dirname(__file__), pdf_files[j % len(pdf_files)])
-            with open(pdf_path, "rb") as f:
-                cv = CV.objects.create(
-                    owner=candidate,
-                    title=f"CV {candidate.username} - {j + 1}",
-                    summary="Demo CV content",
-                    file=File(f, name=f"{candidate.username}_cv{j + 1}.pdf")
-                )
-            print("Tạo CV:", cv.title)
+    # Lấy tất cả job có id >= 7
+    jobs = JobPosting.objects.filter(id__gte=7)
 
-    # Tạo 10 jobposting
-    job_postings = []
-    for i in range(1, 11):
-        employer = random.choice(employers)
-        job = JobPosting.objects.create(
-            is_active=True,
-            owner=employer,
-            title=f"Job {i} - {employer.username}",
-            description="Mô tả công việc",
-            image="https://placehold.co/600x400",
-            salary=f"{random.randint(5,15)} triệu",
-            experience="1-2 năm",
-            address="Hà Nội",
-            city_code=1,
-            deadline=timezone.now() + timedelta(days=30)
-        )
-        job_postings.append(job)
-        print("Tạo Job:", job.title)
-
-    # Tạo 10 application (ngẫu nhiên)
-    cvs = list(CV.objects.all())
-    for i in range(10):
-        job = random.choice(job_postings)
-        cv = random.choice(cvs)
-        app = Application.objects.create(
-            job_posting=job,
-            cv=cv,
-            status=random.choice([s[0] for s in Application.ApplicationStatus.choices])
-        )
-        print(f"Tạo Application: {cv.owner.username} nộp vào {job.title} - status={app.status}")
-
+    for job in jobs:
+        job.tags.set(tags_to_add)  # Ghi đè các tag cũ
+        print(f"✅ Đã gán {len(tags_to_add)} tags cho job '{job.title}' (id={job.id})")
 
 if __name__ == "__main__":
-    User.objects.get(id=192).delete()
+    main()

@@ -10,6 +10,7 @@ def get_dynamic_storage():
     storage_class = import_string(settings.DEFAULT_FILE_STORAGE)
     return storage_class()
 
+
 class TimeStampedModel(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, editable=False)
     updated_at = models.DateTimeField(auto_now=True)
@@ -55,6 +56,24 @@ class CV(TimeStampedModel):
     file = models.FileField(upload_to="cvs/", validators=[validate_pdf])
 
 
+class Tag(models.Model):
+    class TagCategory(models.TextChoices):
+        SKILL = 'SKILL', 'Kỹ năng'
+        FIELD = 'FIELD', 'Lĩnh vực'
+        JOB_TYPE = 'JOB_TYPE', 'Hình thức làm việc'
+        LEVEL = 'LEVEL', 'Cấp bậc'
+        LANGUAGE = 'LANGUAGE', 'Ngôn ngữ'
+        BENEFIT = 'BENEFIT', 'Phúc lợi'
+    name = models.CharField(max_length=50, unique=True)
+    category = models.CharField(
+        max_length=20,
+        choices=TagCategory.choices
+    )
+
+    def __str__(self):
+        return self.name
+
+
 class JobPosting(TimeStampedModel):
     is_active = models.BooleanField(default=True)
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='job_postings')
@@ -71,6 +90,8 @@ class JobPosting(TimeStampedModel):
     address = models.CharField(max_length=500)
     city_code = models.IntegerField()
     deadline = models.DateTimeField()
+
+    tags = models.ManyToManyField(Tag, related_name="job_postings", blank=True)
 
 
 class Application(TimeStampedModel):

@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.utils.safestring import mark_safe
 
-from .models import User, CV, JobPosting, Application
+from .models import User, CV, JobPosting, Application, Tag
 
 
 class ApplicationInline(admin.TabularInline):
@@ -80,6 +80,12 @@ class ApplicationAdmin(admin.ModelAdmin):
     search_fields = ("job_posting__title", "cv__title", "cv__owner__username")
 
 
+class TagAdmin(admin.ModelAdmin):
+    list_display = ("id", "name", "category")
+    list_filter = ("category",)
+    search_fields = ("name",)
+
+
 class JobsiteAdminSite(admin.AdminSite):
     site_header = "Hệ thống Quản Lý"
     site_title = "Job Site Admin"
@@ -94,3 +100,4 @@ admin_site.register(User, UserAdmin)
 admin_site.register(CV, CVAdmin)
 admin_site.register(JobPosting, JobPostingAdmin)
 admin_site.register(Application, ApplicationAdmin)
+admin_site.register(Tag, TagAdmin)

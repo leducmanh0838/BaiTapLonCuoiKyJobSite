@@ -4,7 +4,8 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from app.models import JobPosting, Application
 from app.paginations import DefaultPagination
 from app.permissions import IsOwner, IsEmployer, IsJobPostingApplicationEmployer
-from app.serializers.job_posting_serializer import JobPostingSerializer, JobPostingApplicationSerializer
+from app.serializers.job_posting_serializer import JobPostingCreateSerializer, JobPostingApplicationSerializer, \
+    JobPostingSerializer
 from app.utils.my_upload_file_util import upload_image
 
 
@@ -16,7 +17,12 @@ class JobPostingViewSet(mixins.ListModelMixin,
                         viewsets.GenericViewSet):
     pagination_class = DefaultPagination
     queryset = JobPosting.objects.all()
-    serializer_class = JobPostingSerializer
+    serializer_class = JobPostingCreateSerializer
+
+    def get_serializer_class(self):
+        if self.action in ["create", "update", "partial_update"]:
+            return JobPostingCreateSerializer
+        return JobPostingSerializer
 
     def get_permissions(self):
         if self.action in ['list', 'retrieve']:
