@@ -1,11 +1,14 @@
-from rest_framework import mixins, viewsets
+from django.core.mail import send_mail
+from rest_framework import mixins, viewsets, status
+from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.response import Response
 
 from app.models import JobPosting, Application
 from app.paginations import DefaultPagination
 from app.permissions import IsOwner, IsEmployer, IsJobPostingApplicationEmployer
 from app.serializers.job_posting_serializer import JobPostingCreateSerializer, JobPostingApplicationSerializer, \
-    JobPostingSerializer
+    JobPostingSerializer, JobPosingMessageSerializer
 from app.utils.my_upload_file_util import upload_image
 
 
@@ -43,9 +46,9 @@ class JobPostingViewSet(mixins.ListModelMixin,
         owner_id = self.request.query_params.get("owner_id")
 
         if keyword:
-            queryset = queryset.filter(title__icontains=keyword)  # tìm gần đúng
+            queryset = queryset.filter(title__icontains=keyword)
         if city_code:
-            queryset = queryset.filter(city_code=city_code)  # chính xác
+            queryset = queryset.filter(city_code=city_code)
         if owner_id:
             queryset = queryset.filter(owner_id=owner_id)
 

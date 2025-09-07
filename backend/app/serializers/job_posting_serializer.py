@@ -82,3 +82,11 @@ class JobPostingApplicationSerializer(serializers.ModelSerializer):
             url = obj.cv.file.url
             return request.build_absolute_uri(url) if request else url
         return None
+
+
+class JobPosingMessageSerializer(serializers.Serializer):
+    message = serializers.CharField()
+    statuses = serializers.ListField(
+        child=serializers.ChoiceField(choices=Application.ApplicationStatus.choices),
+        required=False
+    )

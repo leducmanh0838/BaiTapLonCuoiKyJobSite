@@ -5,6 +5,7 @@ from app.views.auth_view import AuthViewSet
 from app.views.cv_view import CVViewSet
 from app.views.job_postings_view import JobPostingViewSet, JobPostingApplicationViewSet
 from app.views.applications_view import ApplicationViewSet
+from app.views.tag_view import TagViewSet
 from app.views.user_view import UserViewSet
 
 # from app.views.cv_view import CVViewSet
@@ -18,6 +19,7 @@ router.register(r'cvs', CVViewSet, basename='cvs')
 router.register(r'applications', ApplicationViewSet, basename='applications')
 router.register(r'auth', AuthViewSet, basename='auth')
 router.register(r'users', UserViewSet, basename='users')
+router.register(r'tags', TagViewSet, basename='tags')
 
 urlpatterns = [
     path('', include(router.urls)),

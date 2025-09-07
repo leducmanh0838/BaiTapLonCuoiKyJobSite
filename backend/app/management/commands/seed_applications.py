@@ -12,19 +12,19 @@ class Command(BaseCommand):
 
         cvs = list(CV.objects.all())
         if not cvs:
-            self.stdout.write(self.style.ERROR("❌ Không có CV nào trong hệ thống"))
+            self.stdout.write(self.style.ERROR("Không có CV nào trong hệ thống"))
             return
 
         job_postings = JobPosting.objects.all()
         if not job_postings.exists():
-            self.stdout.write(self.style.ERROR("❌ Không có JobPosting nào trong hệ thống"))
+            self.stdout.write(self.style.ERROR("Không có JobPosting nào trong hệ thống"))
             return
 
         total_apps = 0
 
         for job in job_postings:
             # random số lượng CV apply cho job này
-            num_applications = random.randint(0, len(cvs))
+            num_applications = random.randint(3, 20)
             chosen_cvs = random.sample(cvs, num_applications) if num_applications > 0 else []
 
             for cv in chosen_cvs:
@@ -32,7 +32,7 @@ class Command(BaseCommand):
                     job_posting=job,
                     cv=cv,
                     defaults={
-                        "is_cancel": False,
+                        "is_cancel": random.random() < 0.2,
                         "status": random.choice([s[0] for s in Application.ApplicationStatus.choices])
                     }
                 )
@@ -43,4 +43,4 @@ class Command(BaseCommand):
                 f"💼 Job '{job.title}' nhận {num_applications} hồ sơ"
             ))
 
-        self.stdout.write(self.style.SUCCESS(f"🎉 Đã tạo tổng cộng {total_apps} ứng tuyển"))
+        self.stdout.write(self.style.SUCCESS(f"Đã tạo tổng cộng {total_apps} ứng tuyển"))
