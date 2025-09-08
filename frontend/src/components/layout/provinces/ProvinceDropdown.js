@@ -1,27 +1,27 @@
 import { useState } from "react";
-import { provinceOptions } from "../../constants/Provinces";
+import { provinceOptions } from "../../../constants/Provinces";
 import { useSearchParams } from "react-router-dom";
 
-const ProvinceDropdown = () => {
-    const [selectedCode, setSelectedCode] = useState(null);
-    const [searchParams, setSearchParams] = useSearchParams();
+const ProvinceDropdown = ({selectedCode, setSelectedCode}) => {
+    // const [selectedCode, setSelectedCode] = useState(null);
+    // const [searchParams, setSearchParams] = useSearchParams();
 
     const handleChange = (event) => {
         const code = event.target.value;
         setSelectedCode(code);
 
-        if (code) {
-            searchParams.set("city_code", code);
-            setSearchParams(searchParams); // cập nhật param trên URL
-        } else {
-            searchParams.delete("city_code");
-            setSearchParams(searchParams);
-        }
+        // if (code) {
+        //     searchParams.set("city_code", code);
+        //     setSearchParams(searchParams); // cập nhật param trên URL
+        // } else {
+        //     searchParams.delete("city_code");
+        //     setSearchParams(searchParams);
+        // }
     };
 
     return (
         <div className="d-flex container align-items-center gap-2">
-            <label htmlFor="provinceSelect" className="form-label d-inline text-nowrap">
+            <label htmlFor="provinceSelect" className="form-label d-inline text-nowrap fw-bold">
                 Chọn tỉnh:
             </label>
             <select
@@ -30,7 +30,7 @@ const ProvinceDropdown = () => {
                 value={selectedCode}
                 onChange={handleChange}
             >
-                <option value="">-- Chọn --</option>
+                <option value="">--Chọn--</option>
                 {provinceOptions.map((province) => (
                     <option key={province.code} value={province.code}>
                         {province.name}

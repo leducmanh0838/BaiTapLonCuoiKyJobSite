@@ -57,6 +57,7 @@ class JobPostingCreateSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         tags_data = validated_data.pop("tags", [])
+        print("tags_data: ", tags_data)
         job = JobPosting.objects.create(**validated_data)
 
         # Lấy tag từ DB theo tên

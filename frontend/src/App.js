@@ -12,6 +12,7 @@ import Register from './components/Auth/Register';
 import CvManager from './components/Cv/CvManager';
 
 import JobPostingsManagement from './components/JobPostings/JobPostingsManagement';
+import Sample2 from './components/Samples/Sample2';
 
 const App = () => {
 
@@ -39,6 +40,8 @@ const App = () => {
               <Route path="/" element={<JobPostingList />} />
               <Route path="/cvs" element={<CvManager />} />
               <Route path="/sample1" element={<Sample1 />} />
+              <Route path="/sample2/new" element={<Sample2 />} />
+              <Route path="/sample2/:itemId/edit" element={<Sample2 />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route path="/employer/job-postings/" element={<JobPostingsManagement />} />
