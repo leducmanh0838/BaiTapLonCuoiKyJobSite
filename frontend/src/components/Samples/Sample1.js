@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import ProvinceDropdown from "../layout/ProvinceDropdown";
 import SearchBox from "../layout/SearchBox";
 import Pagination from "../layout/Pagination";
 import { useSearchParams } from "react-router-dom";
+import ProvinceFilterDropdown from "../layout/provinces/ProvinceFilterDropdown";
+import DistrictFilterDropdown from "../layout/provinces/DistrictFilterDropdown";
 
 const ItemList = ({ items }) => {
     return (<>
@@ -71,11 +72,14 @@ const Sample1 = ({ }) => {
         <div className="container">
 
             <div className="row p-2">
-                <div className="col-6">
+                <div className="col-4">
                     <SearchBox />
                 </div>
-                <div className="col-6">
-                    <ProvinceDropdown />
+                <div className="col-4">
+                    <ProvinceFilterDropdown />
+                </div>
+                <div className="col-4">
+                    <DistrictFilterDropdown />
                 </div>
             </div>
             <div className="row justify-content-center">

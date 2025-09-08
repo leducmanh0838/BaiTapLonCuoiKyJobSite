@@ -32,6 +32,9 @@ export const endpoints = {
         list: 'api/applications/',
         detail: (id) => `api/applications/${id}/`,
     },
+    tags: {
+        list: 'api/tags/',
+    },
     jobPostings: {
         list: 'api/job-postings/',
         detail: (id) => `api/job-postings/${id}/`,
