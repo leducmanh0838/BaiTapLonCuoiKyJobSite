@@ -155,7 +155,7 @@ const JobPostingForm = () => {
       if (form.district_code) fd.append("district_code", form.district_code);
       if (form.ward_code) fd.append("ward_code", form.ward_code);
       if (form.deadline) fd.append("deadline", form.deadline);
-      if (imageFile) fd.append("upload_image", imageFile);
+      if (imageFile) fd.append("image", imageFile);
 
       if (isEdit) {
         await api.patch(endpoints.jobPostings.detail(itemId), fd, {
@@ -205,7 +205,7 @@ const JobPostingForm = () => {
   return (
     <div className="container py-4">
       <h3 className="mb-4">
-        {isEdit ? "Chỉnh sửa tin tuyển dụng" : "Thêm tin tuyển dụng"}
+        {!isEdit ? "Chỉnh sửa tin tuyển dụng" : "Thêm tin tuyển dụng"}
       </h3>
       <Form onSubmit={handleSubmit}>
         <Row className="g-4">
