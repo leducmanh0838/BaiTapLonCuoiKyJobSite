@@ -14,13 +14,18 @@ class JobPostingInfoSerializer(serializers.ModelSerializer):
         ]
 
 class ApplicationSerializer(serializers.ModelSerializer):
-    job_posting = JobPostingInfoSerializer(read_only=True)
+    job_posting_info = JobPostingInfoSerializer(source='job_posting', read_only=True)
+
+    job_posting = serializers.PrimaryKeyRelatedField(
+        queryset=JobPosting.objects.all(), write_only=True
+    )
 
     class Meta:
         model = Application
         fields = [
             'id',
             'job_posting',
+            'job_posting_info',
             'cv',
             'status',
             'is_cancel',
