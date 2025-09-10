@@ -62,7 +62,7 @@ const JobPostingsManagement = () => {
                                                     <Button
                                                       variant="outline-primary"
                                                       size="sm"
-                                                      onClick={() => nav(`/employer/job-postings/${job.id}/edit`, { state: { job } })}
+                                                      onClick={() => nav(`/employer/job-postings/${job.id}/edit`)}
                                                     >
                                                       Chỉnh sửa
                                                     </Button>
