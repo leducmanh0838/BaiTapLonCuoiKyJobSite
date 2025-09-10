@@ -1,7 +1,21 @@
 from rest_framework import serializers
-from app.models import Application, CV
+from app.models import Application, CV, JobPosting
+
+
+class JobPostingInfoSerializer(serializers.ModelSerializer):
+    companyName = serializers.CharField(source='company_name', read_only=True)
+
+    class Meta:
+        model = JobPosting
+        fields = [
+            'id',
+            'title',
+            'companyName'
+        ]
 
 class ApplicationSerializer(serializers.ModelSerializer):
+    job_posting = JobPostingInfoSerializer(read_only=True)
+
     class Meta:
         model = Application
         fields = [
@@ -43,3 +57,4 @@ class ApplicationUpdateSerializer(serializers.ModelSerializer):
             'cv',
             'status'
         ]
+
