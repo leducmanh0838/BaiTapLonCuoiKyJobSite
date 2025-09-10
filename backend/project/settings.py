@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'cloudinary',
     'cloudinary_storage',
+    "django_extensions",
 ]
 
 MIDDLEWARE = [
@@ -94,7 +95,6 @@ DATABASES = {
 
 # settings.py
 X_FRAME_OPTIONS = 'ALLOWALL'
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators

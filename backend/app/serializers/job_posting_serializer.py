@@ -1,5 +1,6 @@
 import bleach
 from rest_framework import serializers
+import json
 
 from app.models import JobPosting, Application, Tag
 from app.serializers.tag_serializer import TagNameSerializer
@@ -7,7 +8,11 @@ from app.serializers.user_serializer import UserAvatarAndNameSerializer
 
 
 class JobPostingSerializer(serializers.ModelSerializer):
-    tags = TagNameSerializer(many=True, read_only=True)
+    tags = serializers.SlugRelatedField(
+        many=True,
+        read_only=True,
+        slug_field="name"
+    )
 
     class Meta:
         model = JobPosting
@@ -21,11 +26,7 @@ class JobPostingSerializer(serializers.ModelSerializer):
 
 class JobPostingCreateSerializer(serializers.ModelSerializer):
     # tags = TagNameSerializer(many=True, read_only=True)
-    tags = serializers.ListField(
-        child=serializers.CharField(),
-        write_only=True,
-        required=False
-    )
+    tags = serializers.CharField(write_only=True, required=False)
 
     class Meta:
         model = JobPosting
@@ -35,6 +36,16 @@ class JobPostingCreateSerializer(serializers.ModelSerializer):
                   "district_code", "ward_code",
                   "deadline", "tags"]
         read_only_fields = ["id", "is_active", "owner"]
+
+    def validate_tags(self, value):
+        """Parse JSON string thành list"""
+        try:
+            tags = json.loads(value) if value else []
+        except Exception:
+            raise serializers.ValidationError("Tags phải là JSON hợp lệ")
+        if not isinstance(tags, list):
+            raise serializers.ValidationError("Tags phải là list")
+        return tags
 
     def validate_description(self, value):
         # Chỉ cho phép một số thẻ và thuộc tính HTML an toàn
