@@ -4,6 +4,7 @@ from django.utils.safestring import mark_safe
 from .models import User, CV, JobPosting, Application, Tag
 
 
+# --- Inline for Application trong JobPosting ---
 class ApplicationInline(admin.TabularInline):
     model = Application
     extra = 0
@@ -12,7 +13,6 @@ class ApplicationInline(admin.TabularInline):
     can_delete = False
 
     def has_add_permission(self, request, obj=None):
-        # Không cho tạo Application từ admin
         return False
 
     def applicant_name(self, obj):
@@ -23,6 +23,8 @@ class ApplicationInline(admin.TabularInline):
     applicant_name.short_description = "Ứng viên"
 
 
+# --- JobPosting ---
+@admin.register(JobPosting)
 class JobPostingAdmin(admin.ModelAdmin):
     list_display = (
         "id", "title", "company_name", "owner",
@@ -50,10 +52,11 @@ class JobPostingAdmin(admin.ModelAdmin):
         if obj.image:
             return mark_safe(f"<img src='{obj.image.url}' width=120 style='border-radius:8px' />")
         return "Không có ảnh"
-
     image_preview.short_description = "Ảnh minh họa"
 
 
+# --- User ---
+@admin.register(User)
 class UserAdmin(admin.ModelAdmin):
     list_display = ("id", "username", "email", "role", "phone", "avatar_preview")
     list_filter = ("role",)
@@ -64,40 +67,28 @@ class UserAdmin(admin.ModelAdmin):
         if obj.avatar:
             return mark_safe(f"<img src='{obj.avatar.url}' width=60 style='border-radius:50%' />")
         return "Không có avatar"
-
     avatar_preview.short_description = "Avatar"
 
 
+# --- CV ---
+@admin.register(CV)
 class CVAdmin(admin.ModelAdmin):
     list_display = ("id", "title", "owner", "created_at")
     search_fields = ("title", "owner__username", "owner__email")
     readonly_fields = ("created_at", "updated_at")
 
 
+# --- Application ---
+@admin.register(Application)
 class ApplicationAdmin(admin.ModelAdmin):
     list_display = ("id", "job_posting", "cv", "status", "is_cancel", "created_at")
     list_filter = ("status", "is_cancel")
     search_fields = ("job_posting__title", "cv__title", "cv__owner__username")
 
 
+# --- Tag ---
+@admin.register(Tag)
 class TagAdmin(admin.ModelAdmin):
     list_display = ("id", "name", "category")
     list_filter = ("category",)
     search_fields = ("name",)
-
-
-class JobsiteAdminSite(admin.AdminSite):
-    site_header = "Hệ thống Quản Lý"
-    site_title = "Job Site Admin"
-    index_title = "Bảng điều khiển"
-
-
-# Khởi tạo site
-admin_site = JobsiteAdminSite(name="jobsiteadmin")
-
-# Đăng ký models
-admin_site.register(User, UserAdmin)
-admin_site.register(CV, CVAdmin)
-admin_site.register(JobPosting, JobPostingAdmin)
-admin_site.register(Application, ApplicationAdmin)
-admin_site.register(Tag, TagAdmin)

@@ -19,10 +19,9 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 
-from app.admin import admin_site
 
 urlpatterns = [
-    path('admin/', admin_site.urls),
+    path('admin/', admin.site.urls),
     path('api/', include('app.urls')),
     path('o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
 ]

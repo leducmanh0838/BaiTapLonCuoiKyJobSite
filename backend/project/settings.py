@@ -36,6 +36,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    "jazzmin",
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -49,6 +50,54 @@ INSTALLED_APPS = [
     'cloudinary_storage',
     "django_extensions",
 ]
+
+JAZZMIN_SETTINGS = {
+    "site_title": "Trang quản trị JobSite",       # tiêu đề tab trình duyệt
+    "site_header": "Hệ thống quản trị JobSite",   # chữ trên header
+    "site_brand": "JobSite Admin",                # chữ logo góc trái
+    "welcome_sign": "Xin chào, chào mừng bạn quay lại!",  # chữ ở dashboard
+    "copyright": "© 2025 JobSite",
+
+    # Logo hiển thị ở menu và trên header (đặt trong static/img)
+    "site_logo_classes": "img-circle",  # bo tròn logo
+
+    "site_logo": "img/logo.jpg",  # bỏ dấu /
+    "site_logo_small": "img/logo.jpg",
+    "site_icon": "img/logo.jpg",
+
+    # Icon cho app và model
+    "icons": {
+        "app": "fas fa-folder",
+        "app.user": "fas fa-user",
+        "app.cv": "fas fa-file-alt",
+        "app.jobposting": "fas fa-briefcase",
+        "app.application": "fas fa-file-signature",
+        "app.tag": "fas fa-tags",
+    },
+
+    # Giao diện
+    "show_ui_builder": True,              # bật chế độ UI builder của Jazzmin
+    "topmenu_links": [
+        {"name": "Trang chủ",  "url": "/", "permissions": ["auth.view_user"]},
+        {"model": "app.jobposting"},
+        {"app": "app"},
+    ],
+    "custom_css": None,                   # nếu muốn thêm CSS
+    "custom_js": None,                    # nếu muốn thêm JS
+    "search_model": "app.user",           # mặc định tìm kiếm user
+    "list_display_links": True,           # bật click vào tên để mở chi tiết
+    "default_icon_parents": "fas fa-folder",
+    "default_icon_children": "fas fa-circle",
+
+    # Tùy chọn theme màu
+    "changeform_format": "horizontal_tabs",
+    "show_sidebar": True,
+    "navigation_expanded": True,
+    "hide_apps": [],
+    "hide_models": [],
+    "related_modal_active": True,
+}
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -129,6 +178,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = 'static/'
+STATICFILES_DIRS = [BASE_DIR / "static"]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
