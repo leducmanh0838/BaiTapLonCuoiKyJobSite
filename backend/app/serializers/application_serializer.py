@@ -10,7 +10,8 @@ class JobPostingInfoSerializer(serializers.ModelSerializer):
         fields = [
             'id',
             'title',
-            'companyName'
+            'companyName',
+            'image'
         ]
 
 class ApplicationSerializer(serializers.ModelSerializer):
