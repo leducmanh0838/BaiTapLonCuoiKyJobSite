@@ -13,12 +13,10 @@ import CvManager from './components/Cv/CvManager';
 
 import JobPostingsManagement from './components/JobPostings/JobPostingsManagement';
 import Sample2 from './components/Samples/Sample2';
-<<<<<<< HEAD
 import JobPostingForm from './components/JobPostings/JobPostingForm';
 import JobPostingForm2 from './components/JobPostings/JobPostingForm';
-=======
 import CvForm from './components/Cv/CvForm';
->>>>>>> origin/JOB-16
+import ApplicationList from './components/JobPostings/ApplicationList';
 
 const App = () => {
 
@@ -55,6 +53,7 @@ const App = () => {
               <Route path="/employer/job-postings/" element={<JobPostingsManagement />} />
               <Route path="/employer/job-postings/new" element={<JobPostingForm />} />
               <Route path="/employer/job-postings/:itemId/edit" element={<JobPostingForm />} />
+              <Route path="/employer/job-postings/:id/applications" element={<ApplicationList />}/>
             </Routes>
           </div>
         </div>

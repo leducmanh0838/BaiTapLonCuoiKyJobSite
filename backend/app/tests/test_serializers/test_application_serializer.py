@@ -4,7 +4,7 @@ from django.test import TestCase
 from app.models import JobPosting, Tag, User, Application, CV
 from datetime import datetime
 
-from app.serializers.application_serializer import ApplicationSerializer, ApplicationUpdateSerializer
+from app.serializers.application_serializer import ApplicationSerializer
 
 
 class ApplicationSerializerTest(TestCase):
