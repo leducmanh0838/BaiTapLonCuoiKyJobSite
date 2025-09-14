@@ -11,6 +11,8 @@ from app.serializers.job_posting_serializer import JobPostingCreateSerializer, J
     JobPostingSerializer, JobPosingMessageSerializer
 from app.utils.email_utils import send_mail_async
 from app.utils.my_upload_file_util import upload_image
+from app.utils.whoosh_utils.build_index import update_index_for_job
+from app.utils.whoosh_utils.search_utils import search_jobs
 
 
 class JobPostingViewSet(mixins.ListModelMixin,
@@ -45,19 +47,31 @@ class JobPostingViewSet(mixins.ListModelMixin,
         keyword = self.request.query_params.get("keyword")
         city_code = self.request.query_params.get("city_code")
         owner_id = self.request.query_params.get("owner_id")
+        tags = self.request.query_params.getlist("tags")
 
         if keyword:
-            queryset = queryset.filter(title__icontains=keyword)
+            ids = search_jobs(keyword)
+            queryset = queryset.filter(id__in=ids)
         if city_code:
             queryset = queryset.filter(city_code=city_code)
         if owner_id:
             queryset = queryset.filter(owner_id=owner_id)
-
+        if tags:
+            print("tags: ", tags)
+            # queryset = queryset.filter(tags__id__in=tags).distinct()
+            for tag_id in tags:
+                queryset = queryset.filter(tags__id=tag_id)
+                
         return queryset.order_by('-id')
 
     def perform_create(self, serializer):
         # image_link = upload_image(self.request)
-        serializer.save(owner=self.request.user)
+        job = serializer.save(owner=self.request.user)
+        update_index_for_job(job)
+
+    def perform_update(self, serializer):
+        job = serializer.save()
+        update_index_for_job(job)
 
     @action(detail=True, methods=['post'], url_path='messages')
     def send_messages(self, request, pk):

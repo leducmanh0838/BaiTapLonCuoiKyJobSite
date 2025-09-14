@@ -28,6 +28,7 @@ const Login = () => {
 
     const handleSubmitSystemLogin = async () => {
         try {
+            setLoading(true);
             const resToken = await Apis.post(endpoints.auth.token, formData, {
                 headers: {
                     "Content-Type": "multipart/form-data"
@@ -54,6 +55,7 @@ const Login = () => {
             });
             navigate("/");
         } catch (error) {
+            toast.warning("Tài khoản hoặc mật khẩu sai!")
             if (error.response && error.response.data && error.response.data.detail) {
                 // alert(error.response.data.message);
                 toast.warning(error.response.data.detail)
@@ -65,6 +67,8 @@ const Login = () => {
             } else {
                 console.error("Lỗi khi gửi yêu cầu:", error.message);
             }
+        } finally {
+            setLoading(false)
         }
     }
 
@@ -141,17 +145,16 @@ const Login = () => {
                         onChange={handleChange}
                     />
                 </div>
-
-                {/* Button Login */}
-                <button className="btn btn-success w-100 rounded-pill mb-3" onClick={handleSubmitSystemLogin}>
-                    Đăng nhập
-                </button>
-                <div class="text-center my-3">
-                    <span class="position-relative top-n1 px-2 bg-white text-muted">hoặc</span>
-                    <hr class="border-1 border-top border-secondary" />
-                </div>
-                {/* Google Login */}
                 {loading ? <MySpinner text="Đang đăng nhập..." /> : <>
+                    <button className="btn btn-success w-100 rounded-pill mb-3" onClick={handleSubmitSystemLogin}>
+                        Đăng nhập
+                    </button>
+                    <div class="text-center my-3">
+                        <span class="position-relative top-n1 px-2 bg-white text-muted">hoặc</span>
+                        <hr class="border-1 border-top border-secondary" />
+                    </div>
+
+
                     <MyGoogleLogin submitSocialLogin={hanldeSubmitSocialLogin} />
                     <FacebookLogin submitSocialLogin={hanldeSubmitSocialLogin} />
                 </>}

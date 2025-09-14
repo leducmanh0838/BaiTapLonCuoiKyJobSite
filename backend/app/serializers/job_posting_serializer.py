@@ -16,7 +16,7 @@ class JobPostingSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = JobPosting
-        fields = ["id", "is_active", "owner", "title",
+        fields = ["id", "is_active", "owner", "title", "company_name",
                   "description", "image", "salary",
                   "experience", "address", "city_code",
                   "district_code", "ward_code",
@@ -30,7 +30,7 @@ class JobPostingCreateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = JobPosting
-        fields = ["id", "is_active", "owner", "title",
+        fields = ["id", "is_active", "owner", "title", "company_name",
                   "description", "image", "salary",
                   "experience", "address", "city_code",
                   "district_code", "ward_code",

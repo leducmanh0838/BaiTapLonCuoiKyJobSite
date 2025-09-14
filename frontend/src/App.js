@@ -7,18 +7,16 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import JobPostingList from './components/JobPostings/JobPostingList';
 import Header from './components/layout/Header';
 import Sample1 from './components/Samples/Sample1';
+import Sample3 from './components/Samples/Sample3';
 import Login from './components/Auth/Login';
 import Register from './components/Auth/Register';
 import CvManager from './components/Cv/CvManager';
 
 import JobPostingsManagement from './components/JobPostings/JobPostingsManagement';
 import Sample2 from './components/Samples/Sample2';
-<<<<<<< HEAD
 import JobPostingForm from './components/JobPostings/JobPostingForm';
 import JobPostingForm2 from './components/JobPostings/JobPostingForm';
-=======
 import CvForm from './components/Cv/CvForm';
->>>>>>> origin/JOB-16
 
 const App = () => {
 
@@ -50,6 +48,7 @@ const App = () => {
               <Route path="/sample1" element={<Sample1 />} />
               <Route path="/sample2/new" element={<Sample2 />} />
               <Route path="/sample2/:itemId/edit" element={<Sample2 />} />
+              {/* <Route path="/sample3" element={<Sample3 />} /> */}
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route path="/employer/job-postings/" element={<JobPostingsManagement />} />

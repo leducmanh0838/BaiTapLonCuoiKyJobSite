@@ -54,7 +54,6 @@ const JobPostingForm = ({ }) => {
     const { itemId } = useParams(); // lấy id
     console.info("itemId: ", itemId)
     const isEdit = !!itemId; //trang này có phải là chỉnh sửa không?
-    const [jsonData, setJsonData] = useState(null)
     const [originalFormData, setOriginalFormData] = useState(null)
 
     const [currentFormData, setCurrentFormData] = useState({
@@ -104,16 +103,6 @@ const JobPostingForm = ({ }) => {
             setCurrentFormData(JSON.parse(JSON.stringify(itemDetail)))
         }
     }, [])
-
-    const handleSubmitEdit = () =>{
-        if(JSON.stringify(originalFormData)===JSON.stringify(currentFormData))
-            toast.warning("Chưa chỉnh sửa dữ liệu nào!!!")
-        // so sánh chỉnh sửa và PATCH đúng dữ liệu chỉnh sửa
-    }
-
-    const handleSubmitAdd = () =>{
-        setJsonData(JSON.stringify(currentFormData, null, 2))
-    }
 
     const handleSubmit = async () => {
         const api = authApis();
@@ -357,7 +346,7 @@ const JobPostingForm = ({ }) => {
                         <div className="row mb-2">
                             <div className="col-6">
                                 <div className="d-flex align-items-center">
-                                    <label htmlFor="addresss" className="form-label d-inline text-nowrap mx-3 me-2 fw-bold">
+                                    <label htmlFor="addresss" className="form-label d-inline text-nowrap mx-3 me-2">
                                         Địa chỉ:
                                     </label>
                                     <input
@@ -402,9 +391,7 @@ const JobPostingForm = ({ }) => {
                                 </>}
                             </div>
                         </div>
-                        <div className="p-3" style={{backgroundColor:"#d8d8d8ff", whiteSpace: "pre-wrap"}}>
-                            {jsonData}
-                        </div>
+
                     </div>
                 </div>
             </div>

@@ -21,7 +21,7 @@ const ProvinceDropdown = ({selectedCode, setSelectedCode}) => {
 
     return (
         <div className="d-flex container align-items-center gap-2">
-            <label htmlFor="provinceSelect" className="form-label d-inline text-nowrap fw-bold">
+            <label htmlFor="provinceSelect" className="form-label d-inline text-nowrap">
                 Chọn tỉnh:
             </label>
             <select
