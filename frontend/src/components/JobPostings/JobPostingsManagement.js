@@ -115,6 +115,7 @@ const JobPostingsManagement = () => {
                           variant="secondary"
                           size="sm"
                           className="w-100 mt-2"
+                          onClick={() => nav(`/employer/job-postings/${job.id}/applications`)}
                         >
                           Xem hồ sơ
                         </Button>

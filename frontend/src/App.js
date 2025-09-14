@@ -17,6 +17,10 @@ import Sample2 from './components/Samples/Sample2';
 import JobPostingForm from './components/JobPostings/JobPostingForm';
 import JobPostingForm2 from './components/JobPostings/JobPostingForm';
 import CvForm from './components/Cv/CvForm';
+<<<<<<< HEAD
+=======
+import ApplicationList from './components/JobPostings/ApplicationList';
+>>>>>>> origin/JOB-15
 
 const App = () => {
 
@@ -54,6 +58,7 @@ const App = () => {
               <Route path="/employer/job-postings/" element={<JobPostingsManagement />} />
               <Route path="/employer/job-postings/new" element={<JobPostingForm />} />
               <Route path="/employer/job-postings/:itemId/edit" element={<JobPostingForm />} />
+              <Route path="/employer/job-postings/:id/applications" element={<ApplicationList />}/>
             </Routes>
           </div>
         </div>
