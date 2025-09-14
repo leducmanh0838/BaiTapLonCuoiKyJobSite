@@ -7,7 +7,7 @@ const GridTagList = ({ tags, link = true }) => {
     <div className="d-flex flex-wrap gap-2 py-1">
       {tags.map((tag, index) => (
         <span key={index} className={`px-2 py-1 rounded-pill border border-2 ${link && "btn btn-light"}`} 
-        onClick={() => link && navigate(`/search?keyword=${tag}`)}
+        onClick={() => link && navigate(`/?keyword=${tag}`)}
         >
           {tag}
         </span>
