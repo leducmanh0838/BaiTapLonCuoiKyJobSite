@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import SearchBox from "../layout/SearchBox";
 import Pagination from "../layout/Pagination";
-import { useLocation, useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import ProvinceFilterDropdown from "../layout/provinces/ProvinceFilterDropdown";
 import DistrictFilterDropdown from "../layout/provinces/DistrictFilterDropdown";
 import TagFilterButton from "../layout/tags/TagFilterButton";
@@ -13,13 +13,14 @@ import { format } from "date-fns";
 import GridTagList from "../layout/tags/GridTagList";
 
 const ItemList = ({ items }) => {
+    const nav = useNavigate();
     return (<>
 
         <div className="container">
             <div className="row">
                 {items && items.map((item, index) => (
                     <div className="col-6">
-                        <div className="container p-3">
+                        <div className="container p-3 btn btn-light text-start" onClick={()=>nav(`/job-postings/${item.id}`)}>
                             <div className="row">
                                 <div className="col-6">
                                     <img
@@ -68,14 +69,6 @@ const JobPostingList = ({ }) => {
     const [totalPage, setTotalPage] = useState(null);
 
     useEffect(() => {
-        // const city_code = searchParams.get("city_code") || "";
-        // const keyword = searchParams.get("keyword") || "";
-        // const page = parseInt(searchParams.get("page")) || 1;
-        // const tags = searchParams.get("tags") || [];
-        // console.info("city_code: ", city_code)
-        // console.info("keyword: ", keyword)
-        // console.info("page: ", page)
-        // console.info("tags: ", JSON.stringify(tags))
 
         const fetchData = async () => {
             try {
