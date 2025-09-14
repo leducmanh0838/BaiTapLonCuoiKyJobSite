@@ -17,10 +17,7 @@ import Sample2 from './components/Samples/Sample2';
 import JobPostingForm from './components/JobPostings/JobPostingForm';
 import JobPostingForm2 from './components/JobPostings/JobPostingForm';
 import CvForm from './components/Cv/CvForm';
-<<<<<<< HEAD
-=======
 import ApplicationList from './components/JobPostings/ApplicationList';
->>>>>>> origin/JOB-15
 
 const App = () => {
 
