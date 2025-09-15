@@ -26,9 +26,9 @@ const WardDropdown = ({ districtCode, selectedCode, setSelectedCode }) => {
     };
 
     return (
-        <div className="d-flex container align-items-center gap-2">
+        <div className="container align-items-center">
             <label htmlFor="provinceSelect" className="form-label d-inline text-nowrap">
-                Chọn phường/xã:
+                Phường/xã:
             </label>
             <select
                 id="provinceSelect"

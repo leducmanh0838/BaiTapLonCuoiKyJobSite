@@ -1,13 +1,9 @@
 import { useState, useMemo, useEffect, memo } from "react";
 import { getTagCategoryByValue } from "../../../constants/TagCategory";
-import { FaTag } from "react-icons/fa";
 import Apis, { endpoints } from "../../../configs/Apis"
-import { useSearchParams } from "react-router-dom";
 
 const SelectedTagLayout = ({ selectedTags, setSelectedTags }) => {
-  // const [selectedTags, setSelectedTags] = useState([]);
   const [tags, setTags] = useState([]);
-  const [searchParams, setSearchParams] = useSearchParams();
 
   const groupedTags = useMemo(() => {
 
@@ -31,44 +27,14 @@ const SelectedTagLayout = ({ selectedTags, setSelectedTags }) => {
     fetchData();
   }, [])
 
-  const toggleTag = (tagId) => {
+  const toggleTag = (tagName) => {
     setSelectedTags((prev) =>
-      prev.includes(tagId) ? prev.filter((id) => id !== tagId) : [...prev, tagId]
+      prev.includes(tagName) ? prev.filter((name) => name !== tagName) : [...prev, tagName]
     );
   };
 
-  const resetFilters = () => setSelectedTags([]);
-  const applyFilters = () => {
-    // const params = new URLSearchParams(window.location.search);
-
-    // // Xóa hết tags cũ
-    // params.delete("tags");
-
-    // // Thêm tags mới
-    // selectedTags.forEach((id) => {
-    //   params.append("tags", id);
-    // });
-
-    // // Update URL mà không reload trang
-    // const newUrl = `${window.location.pathname}?${params.toString()}`;
-    // window.history.replaceState({}, "", newUrl);
-
-    // console.log("URL mới:", newUrl);
-    const newParams = new URLSearchParams(searchParams);
-
-    // Xóa hết tags cũ
-    newParams.delete("tags");
-
-    // Thêm tags mới
-    selectedTags.forEach((id) => {
-      newParams.append("tags", id);
-    });
-
-    setSearchParams(newParams);
-  };
-
   return (
-    <div className="card shadow p-3">
+    <div className="card p-3">
       {Object.entries(groupedTags).map(([category, tags]) => (
         <div key={category} className="mb-3">
           {/* <p className="fw-medium mb-1">{getTagCategoryByValue(category).label}</p> */}
@@ -80,11 +46,11 @@ const SelectedTagLayout = ({ selectedTags, setSelectedTags }) => {
             {tags.map((tag) => (
               <button
                 key={tag.id}
-                className={`btn btn-sm rounded-pill ${selectedTags.includes(tag.id)
+                className={`btn btn-sm rounded-pill ${selectedTags.includes(tag.name)
                   ? "btn-primary text-white"
                   : "btn-outline-primary"
                   }`}
-                onClick={() => toggleTag(tag.id)}
+                onClick={() => toggleTag(tag.name)}
               >
                 {tag.name}
               </button>
@@ -92,15 +58,6 @@ const SelectedTagLayout = ({ selectedTags, setSelectedTags }) => {
           </div>
         </div>
       ))}
-
-      {/* <div className="d-flex justify-content-end mt-3 gap-3">
-        <button className="btn btn-light" onClick={resetFilters}>
-          Làm mới
-        </button>
-        <button className="btn btn-success" onClick={applyFilters}>
-          Áp dụng bộ lọc
-        </button>
-      </div> */}
     </div>
   );
 }

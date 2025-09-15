@@ -9,31 +9,6 @@ import { toast } from "react-toastify";
 import { authApis, endpoints } from "../../configs/Apis";
 import SelectedTagLayout from "../layout/tags/SelectedTagLayout";
 
-const itemDetail = {
-    title: "Tiêu đề cần chỉnh sửa",
-    // field1: "Trường 1 cần chỉnh sửa",
-    salary: "5-10 triệu",
-    experience: "1-2 năm",
-    description: `
-        <b>Mô tả công việc</b>
-        <ul>
-        <li>Lập trình Python</li>
-        <li>Nhiệt tình</li>
-        <li>Chăm sóc khách hàng</li>
-        </ul>
-        <b>Yêu cầu ứng viên</b>
-        <ul>
-        <li>Học giỏi</li>
-        <li>Teamwork tốt</li>
-+        </ul>
-    `,
-    image: "https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg",
-    address: "Địa chỉ cần chỉnh sửa",
-    city_code: 1,
-    district_code: 1,
-    ward_code: 1,
-}
-
 const JobPostingForm = ({ }) => {
     const editor = useRef(null);
     const nav = useNavigate();
@@ -52,12 +27,11 @@ const JobPostingForm = ({ }) => {
         </ul>
     `;
 
-    const { itemId } = useParams(); // lấy id
+    const { itemId } = useParams();
     console.info("itemId: ", itemId)
-    const isEdit = !!itemId; //trang này có phải là chỉnh sửa không?
+    const isEdit = !!itemId;
     const [originalFormData, setOriginalFormData] = useState(null)
-    const [selectedTags, setSelectedTags] = useState([]);
-    const [allTags, setAllTags] = useState([]); // Lưu toàn bộ tag từ API
+    const [selectedTags, setSelectedTags] = useState([])
 
     const [currentFormData, setCurrentFormData] = useState({
         title: "",
@@ -71,20 +45,14 @@ const JobPostingForm = ({ }) => {
         district_code: null,
         ward_code: null,
         deadline: "",
-        tags: "",
+        tags: [],
     });
 
-    // Lấy toàn bộ tag từ API khi mount
     useEffect(() => {
-        const fetchTags = async () => {
-            try {
-                const api = authApis();
-                const res = await api.get(endpoints.tags.list);
-                setAllTags(res.data);
-            } catch (err) {}
-        };
-        fetchTags();
-    }, []);
+        // console.info("selectedTags: ", JSON.stringify(selectedTags))
+        setCurrentFormData((prev) => ({ ...prev, tags: selectedTags, }))
+        // console.info("currentFormData: ", JSON.stringify(currentFormData))
+    }, [selectedTags])
 
     useEffect(() => {
         const fetchJobDetail = async () => {
@@ -95,48 +63,29 @@ const JobPostingForm = ({ }) => {
                     const res = await api.get(endpoints.jobPostings.detail(itemId));
                     const data = res.data;
                     console.log("data: ", data)
-                    // Nếu data.tags là id, map sang name
-                    let tagNames = [];
-                    if (Array.isArray(data.tags) && data.tags.length > 0 && allTags.length > 0) {
-                        tagNames = data.tags.map(id => {
-                            const found = allTags.find(t => t.id === id || t.name === id);
-                            return found ? found.name : id;
-                        });
-                    } else {
-                        tagNames = (data.tags || []).map(tag => typeof tag === 'string' ? tag : tag.text || tag.name || "");
-                    }
+
                     setOriginalFormData(JSON.parse(JSON.stringify(data)));
                     setCurrentFormData({
                         ...data,
                         image: data.image || null,
                         deadline: data.deadline ? data.deadline.slice(0, 16) : "",
-                        tags: tagNames,
+                        // tags: tagNames,
                     });
-                    setSelectedTags(data.tags || []);
+                    setSelectedTags(data.tags)
                 }
             } catch (err) {
                 toast.error("Không thể tải dữ liệu tin tuyển dụng!");
             }
         };
         fetchJobDetail();
-    }, [isEdit, itemId, allTags]);
+    }, [isEdit, itemId]);
     console.log("originalFormData: ", originalFormData)
     console.log("currentFormData: ", currentFormData)
-
-    useEffect(() => {
-        if (isEdit) {
-            console.info("EDIT!!!")
-            // Ensure tags is always an array of strings
-            const tagTexts = (itemDetail.tags || []).map(tag => typeof tag === 'string' ? tag : tag.text || tag.name || "");
-            setOriginalFormData(JSON.parse(JSON.stringify(itemDetail)))
-            setCurrentFormData({ ...itemDetail, tags: tagTexts })
-            setSelectedTags(tagTexts);
-        }
-    }, [])
 
     const handleSubmit = async () => {
         const api = authApis();
         const fd = new FormData();
+        console.info("currentFormData: ", JSON.stringify(currentFormData))
         fd.append("title", currentFormData.title);
         fd.append("company_name", currentFormData.company_name);
         fd.append("description", currentFormData.description);
@@ -147,7 +96,8 @@ const JobPostingForm = ({ }) => {
         fd.append("district_code", currentFormData.district_code);
         fd.append("ward_code", currentFormData.ward_code);
         fd.append("deadline", currentFormData.deadline);
-        fd.append("tags", currentFormData.tags);
+        // console.info("currentFormData.tags.toString(): ", currentFormData.tags.toString())
+        fd.append("tags", JSON.stringify(currentFormData.tags));
         if (currentFormData.image && typeof currentFormData.image !== "string") {
             fd.append("image", currentFormData.image);
         }
@@ -166,21 +116,33 @@ const JobPostingForm = ({ }) => {
             }
             nav("/employer/job-postings");
         } catch (err) {
+            console.error("Lỗi API:", err); // In toàn bộ object lỗi
+
+            // Nếu dùng axios, có thể lấy chi tiết response
+            if (err.response) {
+                console.error("Status:", err.response.status);
+                console.error("Data:", err.response.data);
+                console.error("Headers:", err.response.headers);
+            } else if (err.request) {
+                console.error("Request không có phản hồi:", err.request);
+            } else {
+                console.error("Thông báo lỗi:", err.message);
+            }
             toast.error("Có lỗi xảy ra khi gửi dữ liệu!");
         }
     };
 
 
-    useEffect(() => {
-        const tagNames = selectedTags.map(id => {
-            const found = allTags.find(t => t.id === id || t.name === id);
-            return found ? found.name : id;
-        });
-        setCurrentFormData(prev => ({
-            ...prev,
-            tags: tagNames
-        }));
-    }, [selectedTags, allTags]);
+    // useEffect(() => {
+    //     const tagNames = selectedTags.map(id => {
+    //         const found = allTags.find(t => t.id === id || t.name === id);
+    //         return found ? found.name : id;
+    //     });
+    //     setCurrentFormData(prev => ({
+    //         ...prev,
+    //         tags: tagNames
+    //     }));
+    // }, [selectedTags, allTags]);
 
     return (<>
         <div className="container">
@@ -241,7 +203,7 @@ const JobPostingForm = ({ }) => {
                         <input
                             autoComplete="off"
                             type="text"
-                            className="form-control fs-4 fw-bold mb-3"
+                            className="form-control mb-2"
                             id="title"
                             placeholder="placeholder"
                             value={currentFormData.title}
@@ -258,43 +220,26 @@ const JobPostingForm = ({ }) => {
                         <label htmlFor="title" >Tiêu đề</label>
                     </div>
                     <div className="row mb-2">
-                            <div className="col-12">
-                                <div className="form-floating">
-                                    <input
-                                        autoComplete="off"
-                                        type="text"
-                                        className="form-control"
-                                        id="company_name"
-                                        placeholder="Tên công ty"
-                                        value={currentFormData.company_name}
-                                        onChange={e =>
-                                            setCurrentFormData({
-                                                ...currentFormData,
-                                                company_name: e.target.value,
-                                            })
-                                        }
-                                    />
-                                    <label htmlFor="company_name">Tên công ty</label>
-                                </div>
+                        <div className="col-12">
+                            <div className="form-floating">
+                                <input
+                                    autoComplete="off"
+                                    type="text"
+                                    className="form-control"
+                                    id="company_name"
+                                    placeholder="Tên công ty"
+                                    value={currentFormData.company_name}
+                                    onChange={e =>
+                                        setCurrentFormData({
+                                            ...currentFormData,
+                                            company_name: e.target.value,
+                                        })
+                                    }
+                                />
+                                <label htmlFor="company_name">Tên công ty</label>
                             </div>
                         </div>
-                    {/* <div className="form-floating">
-                        <input
-                            autoComplete="off"
-                            type="text"
-                            className="form-control mb-2"
-                            id="field1"
-                            placeholder="placeholder"
-                            value={currentFormData.field1}
-                            onChange={(e) =>
-                                setCurrentFormData({
-                                    ...currentFormData,
-                                    field1: e.target.value, // lấy file
-                                })
-                            }
-                        />
-                        <label htmlFor="field1" >Trường 1</label>
-                    </div> */}
+                    </div>
                     <div className="form-floating mb-2">
                         <input
                             autoComplete="off"
@@ -376,8 +321,9 @@ const JobPostingForm = ({ }) => {
                     />
 
                     <div className="container mt-3 px-0">
-                        <div className="row row-cols-2 mb-2 g-2">
-                            <div className="col">
+                        {/* <div className="row row-cols-2 mb-2 g-2"> */}
+                        <div className="row flex-column flex-md-row mb-2">
+                            <div className="col-12 col-md-4">
                                 <ProvinceDropdown
                                     selectedCode={currentFormData.city_code}
                                     setSelectedCode={(cityCode) =>
@@ -388,7 +334,7 @@ const JobPostingForm = ({ }) => {
                                     }
                                 />
                             </div>
-                            <div className="col">
+                            <div className="col-12 col-md-4">
                                 <DistrictDropdown
                                     cityCode={currentFormData.city_code}
                                     selectedCode={currentFormData.district_code}
@@ -400,8 +346,38 @@ const JobPostingForm = ({ }) => {
                                     }
                                 />
                             </div>
-                            <div className="col">
-                                <div className="d-flex align-items-center">
+                            <div className="col-12 col-md-4">
+                                <WardDropdown
+                                    districtCode={currentFormData.district_code}
+                                    selectedCode={currentFormData.ward_code}
+                                    setSelectedCode={(wardCode) =>
+                                        setCurrentFormData((prev) => ({
+                                            ...prev,
+                                            ward_code: wardCode
+                                        }))
+                                    }
+                                />
+                            </div>
+                        </div>
+
+                        <div className="col">
+                            <div className="form-floating mb-2">
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    id="address"
+                                    placeholder="address"
+                                    value={currentFormData.address || ""}
+                                    onChange={e =>
+                                        setCurrentFormData({
+                                            ...currentFormData,
+                                            address: e.target.value,
+                                        })
+                                    }
+                                />
+                                <label htmlFor="deadline">Địa chỉ</label>
+                            </div>
+                            {/* <div className="d-flex align-items-center">
                                     <label htmlFor="addresss" className="form-label d-inline text-nowrap mx-3 me-2">
                                         Địa chỉ:
                                     </label>
@@ -419,27 +395,24 @@ const JobPostingForm = ({ }) => {
                                             })
                                         }
                                     />
-                                </div>
-                            </div>
-                            <div className="col">
-                                <WardDropdown
-                                    districtCode={currentFormData.district_code}
-                                    selectedCode={currentFormData.ward_code}
-                                    setSelectedCode={(wardCode) =>
-                                        setCurrentFormData((prev) => ({
-                                            ...prev,
-                                            ward_code: wardCode
-                                        }))
-                                    }
-                                />
-                            </div>
+                                </div> */}
                         </div>
+                        {/* </div> */}
 
 
                         <div className="row mb-2">
                             <div className="col-12">
                                 <div className="mb-3">
-                                    <SelectedTagLayout selectedTags={selectedTags} setSelectedTags={setSelectedTags} />
+                                    <SelectedTagLayout
+                                        {...{ selectedTags, setSelectedTags }}
+                                    // selectedTags={currentFormData.tags}
+                                    // setSelectedTags={(newTags) =>
+                                    //     setCurrentFormData((prev) => ({
+                                    //         ...prev,
+                                    //         tags: newTags,
+                                    //     }))
+                                    // }
+                                    />
                                 </div>
                             </div>
                         </div>
@@ -462,7 +435,7 @@ const JobPostingForm = ({ }) => {
                 </div>
             </div>
         </div>
-        <style>{`
+        {/* <style>{`
 @media (max-width: 768px) {
   .form-floating > label { font-size: 15px; }
   .form-floating > .form-control, .form-floating > .form-select { font-size: 15px; }
@@ -471,7 +444,7 @@ const JobPostingForm = ({ }) => {
   .jodit-wysiwyg { min-height: 180px !important; font-size: 15px; }
   .container, .row, .col-12, .col-md-4, .col-md-8 { padding-left: 0 !important; padding-right: 0 !important; }
 }
-`}</style>
+`}</style> */}
     </>)
 }
 

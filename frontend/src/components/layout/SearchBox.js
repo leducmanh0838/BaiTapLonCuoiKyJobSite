@@ -13,7 +13,7 @@ const SearchBox = () => {
 
     return (
         <form onSubmit={handleSubmit}>
-            <div className="d-flex container align-items-center gap-2">
+            <div className="container align-items-center gap-2">
                 <label htmlFor="searchbox" className="form-label d-inline text-nowrap">
                     Tìm kiếm:
                 </label>

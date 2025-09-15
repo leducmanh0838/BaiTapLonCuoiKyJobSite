@@ -22,7 +22,7 @@ export const endpoints = {
     },
     user: {
         currentUser: 'api/users/current-user/',
-        list:'api/users/',
+        list: 'api/users/',
     },
     cvs: {
         list: 'api/cvs/',
@@ -41,13 +41,19 @@ export const endpoints = {
         applications: {
             list: (jobPostingId) => `api/job-postings/${jobPostingId}/applications/`,
             detail: (jobPostingId, applicationId) => `api/job-postings/${jobPostingId}/applications/${applicationId}/`,
+            markRead: (jobPostingId, applicationId) => `api/job-postings/${jobPostingId}/applications/${applicationId}/mark_read/`,
         },
     },
+    employer: {
+        jobPostings: {
+            list: 'api/employer/job-postings/',
+        }
+    }
 };
 
 export const authApis = () => {
     const token = cookie.load('token')
-    const accessToken = token?.access_token; 
+    const accessToken = token?.access_token;
     return axios.create({
         baseURL: BASE_URL,
         headers: {
