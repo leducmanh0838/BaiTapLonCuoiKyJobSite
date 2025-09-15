@@ -7,6 +7,23 @@ from app.serializers.tag_serializer import TagNameSerializer
 from app.serializers.user_serializer import UserAvatarAndNameSerializer
 
 
+class EmployerJobPostingSerializer(serializers.ModelSerializer):
+    unread_applications_count = serializers.SerializerMethodField()
+
+    class Meta:
+        model = JobPosting
+        fields = [
+            "id", "is_active", "owner", "title", "company_name",
+            "image", "salary", "experience", "address", "city_code",
+            "district_code", "ward_code", "deadline",
+            "unread_applications_count",  # 👈 thêm field mới
+        ]
+        read_only_fields = ["id", "is_active", "owner"]
+
+    def get_unread_applications_count(self, obj):
+        return obj.applications.filter(is_read=False, is_cancel=False).count()
+
+
 class JobPostingSerializer(serializers.ModelSerializer):
     tags = serializers.SlugRelatedField(
         many=True,

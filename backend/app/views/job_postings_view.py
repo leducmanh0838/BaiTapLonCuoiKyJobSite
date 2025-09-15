@@ -1,4 +1,3 @@
-from django.core.mail import send_mail
 from rest_framework import mixins, viewsets, status
 from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny, IsAuthenticated
@@ -8,9 +7,8 @@ from app.models import JobPosting, Application
 from app.paginations import DefaultPagination
 from app.permissions import IsOwner, IsEmployer, IsJobPostingApplicationEmployer
 from app.serializers.job_posting_serializer import JobPostingCreateSerializer, JobPostingApplicationSerializer, \
-    JobPostingSerializer, JobPosingMessageSerializer
+    JobPostingSerializer, JobPosingMessageSerializer, EmployerJobPostingSerializer
 from app.utils.email_utils import send_mail_async
-from app.utils.my_upload_file_util import upload_image
 from app.utils.whoosh_utils.build_index import update_index_for_job
 from app.utils.whoosh_utils.search_utils import search_jobs
 
@@ -121,6 +119,14 @@ class JobPostingViewSet(mixins.ListModelMixin,
         }, status=status.HTTP_200_OK)
 
 
+class EmployerJobPostingViewSet(mixins.ListModelMixin,
+                        viewsets.GenericViewSet):
+    pagination_class = DefaultPagination
+    serializer_class = EmployerJobPostingSerializer
+
+    def get_queryset(self):
+        return JobPosting.objects.filter(owner=self.request.user).order_by('-id')
+
 class JobPostingApplicationViewSet(mixins.ListModelMixin,
                                    mixins.RetrieveModelMixin,
                                    mixins.UpdateModelMixin,
@@ -132,3 +138,14 @@ class JobPostingApplicationViewSet(mixins.ListModelMixin,
     def get_queryset(self):
         job_posting_id = self.kwargs['job_posting_pk']
         return Application.objects.filter(job_posting_id=job_posting_id)
+
+    @action(detail=True, methods=["patch"], url_path="mark_read")
+    def mark_read(self, request, job_posting_pk, pk=None):
+        application = self.get_object()
+        if not application.is_read:
+            application.is_read = True
+            application.save(update_fields=["is_read"])
+        return Response(
+            {"status": "marked as read", "id": application.id},
+            status=status.HTTP_200_OK
+        )
