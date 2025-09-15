@@ -7,6 +7,7 @@ import DistrictDropdown from "../layout/provinces/DistrictDropdown";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { authApis, endpoints } from "../../configs/Apis";
+import SelectedTagLayout from "../layout/tags/SelectedTagLayout";
 
 const itemDetail = {
     title: "Tiêu đề cần chỉnh sửa",
@@ -55,9 +56,12 @@ const JobPostingForm = ({ }) => {
     console.info("itemId: ", itemId)
     const isEdit = !!itemId; //trang này có phải là chỉnh sửa không?
     const [originalFormData, setOriginalFormData] = useState(null)
+    const [selectedTags, setSelectedTags] = useState([]);
+    const [allTags, setAllTags] = useState([]); // Lưu toàn bộ tag từ API
 
     const [currentFormData, setCurrentFormData] = useState({
         title: "",
+        company_name: "",
         salary: "",
         description: defaultTemplate,
         experience: "",
@@ -66,7 +70,21 @@ const JobPostingForm = ({ }) => {
         city_code: null,
         district_code: null,
         ward_code: null,
+        deadline: "",
+        tags: "",
     });
+
+    // Lấy toàn bộ tag từ API khi mount
+    useEffect(() => {
+        const fetchTags = async () => {
+            try {
+                const api = authApis();
+                const res = await api.get(endpoints.tags.list);
+                setAllTags(res.data);
+            } catch (err) {}
+        };
+        fetchTags();
+    }, []);
 
     useEffect(() => {
         const fetchJobDetail = async () => {
@@ -77,30 +95,42 @@ const JobPostingForm = ({ }) => {
                     const res = await api.get(endpoints.jobPostings.detail(itemId));
                     const data = res.data;
                     console.log("data: ", data)
+                    // Nếu data.tags là id, map sang name
+                    let tagNames = [];
+                    if (Array.isArray(data.tags) && data.tags.length > 0 && allTags.length > 0) {
+                        tagNames = data.tags.map(id => {
+                            const found = allTags.find(t => t.id === id || t.name === id);
+                            return found ? found.name : id;
+                        });
+                    } else {
+                        tagNames = (data.tags || []).map(tag => typeof tag === 'string' ? tag : tag.text || tag.name || "");
+                    }
                     setOriginalFormData(JSON.parse(JSON.stringify(data)));
                     setCurrentFormData({
                         ...data,
-                        image: data.image || null, // giữ nguyên link ảnh nếu có
-                        deadline: data.deadline ? data.deadline.slice(0, 16) : "", // chuyển về dạng datetime-local nếu có
+                        image: data.image || null,
+                        deadline: data.deadline ? data.deadline.slice(0, 16) : "",
+                        tags: tagNames,
                     });
+                    setSelectedTags(data.tags || []);
                 }
             } catch (err) {
                 toast.error("Không thể tải dữ liệu tin tuyển dụng!");
             }
         };
         fetchJobDetail();
-    }, [isEdit, itemId]);
+    }, [isEdit, itemId, allTags]);
     console.log("originalFormData: ", originalFormData)
     console.log("currentFormData: ", currentFormData)
 
     useEffect(() => {
         if (isEdit) {
             console.info("EDIT!!!")
-            // lấy dữ liệu chi tiết từ id
-            // JSON.parse(JSON.stringify(...)) để clone và tránh lưu tham chiếu
-            
+            // Ensure tags is always an array of strings
+            const tagTexts = (itemDetail.tags || []).map(tag => typeof tag === 'string' ? tag : tag.text || tag.name || "");
             setOriginalFormData(JSON.parse(JSON.stringify(itemDetail)))
-            setCurrentFormData(JSON.parse(JSON.stringify(itemDetail)))
+            setCurrentFormData({ ...itemDetail, tags: tagTexts })
+            setSelectedTags(tagTexts);
         }
     }, [])
 
@@ -108,16 +138,18 @@ const JobPostingForm = ({ }) => {
         const api = authApis();
         const fd = new FormData();
         fd.append("title", currentFormData.title);
+        fd.append("company_name", currentFormData.company_name);
         fd.append("description", currentFormData.description);
         fd.append("salary", currentFormData.salary);
-        fd.append("experience", currentFormData.experience || ""); // nếu có
+        fd.append("experience", currentFormData.experience || "");
         fd.append("address", currentFormData.address);
         fd.append("city_code", currentFormData.city_code);
         fd.append("district_code", currentFormData.district_code);
         fd.append("ward_code", currentFormData.ward_code);
-        fd.append("deadline", currentFormData.deadline); // nên chuyển về ISO nếu dùng datetime-local
+        fd.append("deadline", currentFormData.deadline);
+        fd.append("tags", currentFormData.tags);
         if (currentFormData.image && typeof currentFormData.image !== "string") {
-            fd.append("image", currentFormData.image); // chỉ gửi file mới, không gửi link string
+            fd.append("image", currentFormData.image);
         }
 
         try {
@@ -138,12 +170,22 @@ const JobPostingForm = ({ }) => {
         }
     };
 
+
+    useEffect(() => {
+        const tagNames = selectedTags.map(id => {
+            const found = allTags.find(t => t.id === id || t.name === id);
+            return found ? found.name : id;
+        });
+        setCurrentFormData(prev => ({
+            ...prev,
+            tags: tagNames
+        }));
+    }, [selectedTags, allTags]);
+
     return (<>
         <div className="container">
-
-            <div className="row p-2">
-                <div className="col-4">
-                    {/* <img src={item.image} className="img-fluid" style={{ width: '100%', maxHeight: '600px', objectFit: 'cover' }}/> */}
+            <div className="row p-2 flex-column flex-md-row">
+                <div className="col-12 col-md-4 mb-3 mb-md-0">
                     <div>
                         <input
                             type="file"
@@ -163,11 +205,6 @@ const JobPostingForm = ({ }) => {
                             className="upload-box"
                             style={{
                                 display: "flex",
-                                // justifyContent: "center",
-                                // alignItems: "center",
-                                // backgroundColor: "#faf8f5",
-                                // border: "2px dashed #ddd",
-                                // borderRadius: "12px",
                                 width: '100%',
                                 objectFit: 'cover',
                                 cursor: "pointer",
@@ -199,7 +236,7 @@ const JobPostingForm = ({ }) => {
                         </label>
                     </div>
                 </div>
-                <div className="col-8">
+                <div className="col-12 col-md-8">
                     <div className="form-floating">
                         <input
                             autoComplete="off"
@@ -220,6 +257,27 @@ const JobPostingForm = ({ }) => {
                         />
                         <label htmlFor="title" >Tiêu đề</label>
                     </div>
+                    <div className="row mb-2">
+                            <div className="col-12">
+                                <div className="form-floating">
+                                    <input
+                                        autoComplete="off"
+                                        type="text"
+                                        className="form-control"
+                                        id="company_name"
+                                        placeholder="Tên công ty"
+                                        value={currentFormData.company_name}
+                                        onChange={e =>
+                                            setCurrentFormData({
+                                                ...currentFormData,
+                                                company_name: e.target.value,
+                                            })
+                                        }
+                                    />
+                                    <label htmlFor="company_name">Tên công ty</label>
+                                </div>
+                            </div>
+                        </div>
                     {/* <div className="form-floating">
                         <input
                             autoComplete="off"
@@ -317,9 +375,9 @@ const JobPostingForm = ({ }) => {
                         }
                     />
 
-                    <div className="container mt-3">
-                        <div className="row mb-2">
-                            <div className="col-6">
+                    <div className="container mt-3 px-0">
+                        <div className="row row-cols-2 mb-2 g-2">
+                            <div className="col">
                                 <ProvinceDropdown
                                     selectedCode={currentFormData.city_code}
                                     setSelectedCode={(cityCode) =>
@@ -330,7 +388,7 @@ const JobPostingForm = ({ }) => {
                                     }
                                 />
                             </div>
-                            <div className="col-6">
+                            <div className="col">
                                 <DistrictDropdown
                                     cityCode={currentFormData.city_code}
                                     selectedCode={currentFormData.district_code}
@@ -342,9 +400,7 @@ const JobPostingForm = ({ }) => {
                                     }
                                 />
                             </div>
-                        </div>
-                        <div className="row mb-2">
-                            <div className="col-6">
+                            <div className="col">
                                 <div className="d-flex align-items-center">
                                     <label htmlFor="addresss" className="form-label d-inline text-nowrap mx-3 me-2">
                                         Địa chỉ:
@@ -359,13 +415,13 @@ const JobPostingForm = ({ }) => {
                                         onChange={(e) =>
                                             setCurrentFormData({
                                                 ...currentFormData,
-                                                address: e.target.value, // lấy file
+                                                address: e.target.value,
                                             })
                                         }
                                     />
                                 </div>
                             </div>
-                            <div className="col-6">
+                            <div className="col">
                                 <WardDropdown
                                     districtCode={currentFormData.district_code}
                                     selectedCode={currentFormData.ward_code}
@@ -378,6 +434,16 @@ const JobPostingForm = ({ }) => {
                                 />
                             </div>
                         </div>
+
+
+                        <div className="row mb-2">
+                            <div className="col-12">
+                                <div className="mb-3">
+                                    <SelectedTagLayout selectedTags={selectedTags} setSelectedTags={setSelectedTags} />
+                                </div>
+                            </div>
+                        </div>
+
                         <div className="row">
                             <div className="col d-flex justify-content-end mt-2">
                                 {isEdit ? <>
@@ -386,7 +452,7 @@ const JobPostingForm = ({ }) => {
                                     </div>
                                 </> : <>
                                     <div className="btn btn-primary" onClick={handleSubmit}>
-                                        Thêm
+                                        Đăng tin tuyển dụng
                                     </div>
                                 </>}
                             </div>
@@ -396,6 +462,16 @@ const JobPostingForm = ({ }) => {
                 </div>
             </div>
         </div>
+        <style>{`
+@media (max-width: 768px) {
+  .form-floating > label { font-size: 15px; }
+  .form-floating > .form-control, .form-floating > .form-select { font-size: 15px; }
+  .btn { font-size: 16px; }
+  .upload-box { min-height: 180px !important; }
+  .jodit-wysiwyg { min-height: 180px !important; font-size: 15px; }
+  .container, .row, .col-12, .col-md-4, .col-md-8 { padding-left: 0 !important; padding-right: 0 !important; }
+}
+`}</style>
     </>)
 }
 

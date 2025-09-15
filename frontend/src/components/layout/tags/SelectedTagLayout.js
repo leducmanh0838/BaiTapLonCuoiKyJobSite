@@ -93,14 +93,14 @@ const SelectedTagLayout = ({ selectedTags, setSelectedTags }) => {
         </div>
       ))}
 
-      <div className="d-flex justify-content-end mt-3 gap-3">
+      {/* <div className="d-flex justify-content-end mt-3 gap-3">
         <button className="btn btn-light" onClick={resetFilters}>
           Làm mới
         </button>
         <button className="btn btn-success" onClick={applyFilters}>
           Áp dụng bộ lọc
         </button>
-      </div>
+      </div> */}
     </div>
   );
 }
