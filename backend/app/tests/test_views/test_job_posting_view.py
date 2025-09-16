@@ -15,6 +15,7 @@ class JobPostingViewSetTest(APITestCase):
         self.job_posting = JobPosting.objects.create(
             owner=self.user,
             title="Lập trình viên Python",
+            company_name="Tên công ty",
             description="Viết API bằng Django",
             salary='Thỏa thuận',
             experience="1 năm",
@@ -43,6 +44,7 @@ class JobPostingViewSetTest(APITestCase):
         data = {
             # "owner": self.user.id,
             "title": "Tester Django",
+            "company_name": "Tên công ty",
             "description": "Test create job posting",
             "salary": "Thỏa thuận",
             "experience": "0-2 năm",

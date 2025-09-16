@@ -13,6 +13,7 @@ class JobPostingSerializerTest(TestCase):
         self.job_posting = JobPosting.objects.create(
             owner=self.user,
             title="Lập trình viên Python",
+            company_name="Công ty ABC",
             description="Viết API bằng Django",
             salary='Thỏa thuận',
             experience="1 năm",
