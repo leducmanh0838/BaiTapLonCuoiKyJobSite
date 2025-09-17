@@ -1,92 +1,95 @@
 import { useEffect, useState } from "react";
 import { authApis, endpoints } from "../../configs/Apis";
-import { Button, Card, Col, Container, Row } from "react-bootstrap";
+import { Button, Card, Col, Container, Row, Badge } from "react-bootstrap";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { FaFilePdf } from "react-icons/fa";
 
 const CvCard = ({ cv, onDelete }) => {
   const navigate = useNavigate();
   return (
-    <Card className="shadow-sm w-100" style={{ minHeight: "220px" }}>
-      <Card.Body>
-        <Row>
-          {/* Preview bên trái */}
-          <Col xs={5} className="d-flex align-items-center">
-            <div
-              style={{
-                width: "100%",
-                height: "160px",
-                border: "1px solid #ddd",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                overflow: "hidden",
-                background: "#f8f9fa",
-              }}
-            >
-              {cv.file ? (
-                <iframe
-                  src={cv.file}
-                  type="application/pdf"
-                  title={cv.title}
-                  style={{
-                    width: "100%",
-                    height: "250px",
-                    border: "1px solid #ddd",
-                    borderRadius: "8px",
-                  }}
-                />
-              ) : (
-                <div
-                  className="d-flex align-items-center justify-content-center text-muted"
-                  style={{
-                    width: "100%",
-                    height: "250px",
-                    border: "1px dashed #ccc",
-                    borderRadius: "8px",
-                  }}
-                >
-                  Không có file CV
-                </div>
-              )}
-            </div>
-          </Col>
+    <Card
+      className="shadow-sm h-100 border-0 rounded-3 cv-card"
+      style={{ transition: "0.3s" }}
+    >
+      <Card.Header className="bg-light d-flex align-items-center justify-content-between">
+        <span className="fw-bold">
+          <FaFilePdf className="text-danger me-2" />
+          {cv.title}
+        </span>
+        <Badge bg="secondary">CV</Badge>
+      </Card.Header>
 
-          {/* Nội dung bên phải */}
-          <Col xs={7} className="d-flex flex-column">
-            <h6 className="fw-bold">{cv.title}</h6>
-            <div
-              style={{
-                flexGrow: 1,
-                maxHeight: "80px",
-                overflowY: "auto",
-                fontSize: "14px",
-              }}
-              className="mb-2"
-            >
-              <strong>Tóm tắt:</strong>
-              <div
-                dangerouslySetInnerHTML={{
-                  __html: cv.summary || "Chưa có tóm tắt",
+      <Card.Body className="d-flex">
+        {/* Preview CV */}
+        <Col xs={5} className="d-flex align-items-center pe-2">
+          <div
+            style={{
+              width: "100%",
+              height: "160px",
+              borderRadius: "8px",
+              overflow: "hidden",
+              background: "#f8f9fa",
+              border: "1px solid #eee",
+            }}
+          >
+            {cv.file ? (
+              <iframe
+                src={cv.file}
+                type="application/pdf"
+                title={cv.title}
+                style={{
+                  width: "100%",
+                  height: "160px",
+                  border: "none",
                 }}
               />
-            </div>
+            ) : (
+              <div className="d-flex flex-column align-items-center justify-content-center h-100 text-muted">
+                <FaFilePdf size={28} className="mb-2" />
+                <span>Không có file</span>
+              </div>
+            )}
+          </div>
+        </Col>
 
-            <div className="d-flex justify-content-start">
-              <Button
-                variant="warning"
-                size="sm"
-                className="me-2"
-                onClick={() => navigate(`/cvs/${cv.id}/edit`)}
-              >
-                Chỉnh sửa
-              </Button>
-              <Button variant="danger" size="sm" onClick={() => onDelete(cv.id)}>
-                Xóa
-              </Button>
-            </div>
-          </Col>
-        </Row>
+        {/* Nội dung */}
+        <Col xs={7} className="d-flex flex-column">
+          <div
+            style={{
+              flexGrow: 1,
+              maxHeight: "100px",
+              overflowY: "auto",
+              fontSize: "14px",
+            }}
+            className="mb-2"
+          >
+            <strong>Tóm tắt:</strong>
+            <div
+              dangerouslySetInnerHTML={{
+                __html: cv.summary || "Chưa có tóm tắt",
+              }}
+            />
+          </div>
+
+          <div className="mt-auto d-flex">
+            <Button
+              variant="outline-warning"
+              size="sm"
+              className="me-2"
+              onClick={() => navigate(`/cvs/${cv.id}/edit`)}
+            >
+              Chỉnh sửa
+            </Button>
+            <Button
+              variant="outline-danger"
+              size="sm"
+              onClick={() => onDelete(cv.id)}
+            >
+              Xóa
+            </Button>
+          </div>
+        </Col>
       </Card.Body>
     </Card>
   );
@@ -126,28 +129,28 @@ const CvManager = () => {
   };
 
   return (
-    <Container className="mt-3 mb-3">
-      <h3 className="mb-3">Trang quản lý các CV của ứng viên</h3>
-      <Button
-        variant="primary"
-        className="mb-4"
-        onClick={() => navigate("/cvs/new")}
-      >
-        Thêm CV mới của bạn
-      </Button>
+    <Container className="mt-3 mb-5">
+      <div className="d-flex justify-content-between align-items-center mb-4">
+        <h3 className="fw-bold">📄 Quản lý CV</h3>
+        <Button variant="primary" onClick={() => navigate("/cvs/new")}>
+          + Thêm CV mới
+        </Button>
+      </div>
 
       <Row>
         {cvs.map((cv) => (
-          <Col md={6} sm={12} className="mb-3" key={cv.id}>
+          <Col md={6} sm={12} className="mb-4" key={cv.id}>
             <CvCard cv={cv} onDelete={deleteCv} />
           </Col>
         ))}
       </Row>
 
-      {/* Nút Xem thêm */}
       {nextPage && (
         <div className="text-center mt-3">
-          <Button variant="outline-primary" onClick={() => loadCvs(nextPage, true)}>
+          <Button
+            variant="outline-primary"
+            onClick={() => loadCvs(nextPage, true)}
+          >
             Xem thêm
           </Button>
         </div>
