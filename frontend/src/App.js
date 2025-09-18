@@ -20,6 +20,7 @@ import CvForm from './components/Cv/CvForm';
 import ApplicationList from './components/JobPostings/ApplicationList';
 import ApplicationManagement from './components/Application/ApplicationManagement';
 import JobPostingDetail from './components/JobPostings/JobPostingDetail';
+import JobApplicationForm from './components/JobPostings/JobApplicationForm';
 const App = () => {
 
   return (
@@ -59,6 +60,7 @@ const App = () => {
               <Route path="/employer/job-postings/:id/applications" element={<ApplicationList />}/>
               <Route path="/applications" element={<ApplicationManagement />} />
               <Route path="/job-postings/:id" element={<JobPostingDetail />} />
+              <Route path="/job-postings/:id/applications/" element={<JobApplicationForm />} />
             </Routes>
           </div>
         </div>

@@ -1,6 +1,6 @@
 // src/components/Cv/CvForm.js
 import { useEffect, useRef, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import { authApis, endpoints } from "../../configs/Apis";
 import { toast } from "react-toastify";
 import { FaFilePdf } from "react-icons/fa";
@@ -18,6 +18,7 @@ const defaultTemplate = `
 const CvForm = () => {
   const { cvId } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
   const isEdit = !!cvId;
 
   const editor = useRef(null);
@@ -30,6 +31,10 @@ const CvForm = () => {
     fileUrl: null,
   });
   const [loading, setLoading] = useState(false);
+
+  // ✅ lấy redirect param từ URL
+  const queryParams = new URLSearchParams(location.search);
+  const redirectUrl = queryParams.get("redirect");
 
   // ✅ Load CV khi edit
   useEffect(() => {
@@ -75,26 +80,33 @@ const CvForm = () => {
   };
 
   // ✅ Submit khi thêm mới
-  const handleSubmitAdd = async () => {
-    const formData = new FormData();
-    formData.append("title", currentFormData.title);
-    formData.append("summary", currentFormData.summary);
-    if (currentFormData.file)
-      formData.append("upload_file", currentFormData.file);
+ const handleSubmitAdd = async () => {
+  const formData = new FormData();
+  formData.append("title", currentFormData.title);
+  formData.append("summary", currentFormData.summary);
+  if (currentFormData.file)
+    formData.append("upload_file", currentFormData.file);
 
-    try {
-      setLoading(true);
-      await authApis().post(endpoints.cvs.list, formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-      toast.success("Thêm CV thành công!");
+  try {
+    setLoading(true);
+    let res = await authApis().post(endpoints.cvs.list, formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+    toast.success("Thêm CV thành công!");
+
+    // ✅ Truyền kèm newCvId khi redirect
+    if (redirectUrl) {
+      navigate(`${redirectUrl}?newCvId=${res.data.id}`);
+    } else {
       navigate("/cvs");
-    } catch (err) {
-      toast.error("Có lỗi xảy ra khi thêm CV!");
-    } finally {
-      setLoading(false);
     }
-  };
+  } catch (err) {
+    toast.error("Có lỗi xảy ra khi thêm CV!");
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   // ✅ Submit khi sửa
   const handleSubmitEdit = async () => {
@@ -110,6 +122,7 @@ const CvForm = () => {
         headers: { "Content-Type": "multipart/form-data" },
       });
       toast.success("Cập nhật CV thành công!");
+      // ✅ Khi edit thì luôn quay về /cvs
       navigate("/cvs");
     } catch (err) {
       toast.error("Có lỗi xảy ra khi cập nhật CV!");

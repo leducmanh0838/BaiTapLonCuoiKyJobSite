@@ -123,7 +123,7 @@ const JobPostingDetail = () => {
           size="lg"
           className="px-5 py-2 rounded-3 fw-bold"
           style={{ fontSize: 20 }}
-          onClick={()=>nav("/applications")}
+         onClick={() => nav(`/job-postings/${id}/applications/`)}
         >
           Nộp ứng tuyển
         </Button>
