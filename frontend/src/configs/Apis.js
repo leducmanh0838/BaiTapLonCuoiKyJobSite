@@ -43,6 +43,7 @@ export const endpoints = {
             detail: (jobPostingId, applicationId) => `api/job-postings/${jobPostingId}/applications/${applicationId}/`,
             markRead: (jobPostingId, applicationId) => `api/job-postings/${jobPostingId}/applications/${applicationId}/mark_read/`,
         },
+        messages: (id) => `api/job-postings/${id}/messages/`,
     },
     employer: {
         jobPostings: {
