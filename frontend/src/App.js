@@ -7,7 +7,6 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import JobPostingList from './components/JobPostings/JobPostingList';
 import Header from './components/layout/Header';
 import Sample1 from './components/Samples/Sample1';
-import Sample3 from './components/Samples/Sample3';
 import Login from './components/Auth/Login';
 import Register from './components/Auth/Register';
 import CvManager from './components/Cv/CvManager';
@@ -15,11 +14,11 @@ import CvManager from './components/Cv/CvManager';
 import JobPostingsManagement from './components/JobPostings/JobPostingsManagement';
 import Sample2 from './components/Samples/Sample2';
 import JobPostingForm from './components/JobPostings/JobPostingForm';
-import JobPostingForm2 from './components/JobPostings/JobPostingForm';
 import CvForm from './components/Cv/CvForm';
 import ApplicationList from './components/JobPostings/ApplicationList';
 import ApplicationManagement from './components/Application/ApplicationManagement';
 import JobPostingDetail from './components/JobPostings/JobPostingDetail';
+import AutoCvPage from './components/Cv/AutoCV/AutoCvPage';
 const App = () => {
 
   return (
@@ -59,6 +58,7 @@ const App = () => {
               <Route path="/employer/job-postings/:id/applications" element={<ApplicationList />}/>
               <Route path="/applications" element={<ApplicationManagement />} />
               <Route path="/job-postings/:id" element={<JobPostingDetail />} />
+              <Route path="/auto-cv" element={<AutoCvPage />} />
             </Routes>
           </div>
         </div>
