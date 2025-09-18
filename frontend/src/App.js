@@ -18,11 +18,8 @@ import CvForm from './components/Cv/CvForm';
 import ApplicationList from './components/JobPostings/ApplicationList';
 import ApplicationManagement from './components/Application/ApplicationManagement';
 import JobPostingDetail from './components/JobPostings/JobPostingDetail';
-<<<<<<< HEAD
 import JobApplicationForm from './components/JobPostings/JobApplicationForm';
-=======
 import AutoCvPage from './components/Cv/AutoCV/AutoCvPage';
->>>>>>> origin/JOB-33
 const App = () => {
 
   return (
@@ -62,11 +59,8 @@ const App = () => {
               <Route path="/employer/job-postings/:id/applications" element={<ApplicationList />}/>
               <Route path="/applications" element={<ApplicationManagement />} />
               <Route path="/job-postings/:id" element={<JobPostingDetail />} />
-<<<<<<< HEAD
               <Route path="/job-postings/:id/applications/" element={<JobApplicationForm />} />
-=======
               <Route path="/auto-cv" element={<AutoCvPage />} />
->>>>>>> origin/JOB-33
             </Routes>
           </div>
         </div>
