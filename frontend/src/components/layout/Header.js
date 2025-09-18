@@ -77,12 +77,12 @@ const Header = () => {
 
     return (
         <>
-            <header className="d-flex align-items-center justify-content-between p-2 m-1 shadow bg-white sticky-top rounded">
+            <header className="d-flex align-items-center justify-content-between p-2 shadow bg-white sticky-top rounded">
                 <div className="d-flex align-items-center">
                     <div className="d-flex align-items-center me-3" onClick={() => nav("/")}
                         style={{ cursor: "pointer" }}
                     >
-                        <img src="images/logo.jpg"
+                        <img src="/images/logo.jpg"
                             style={{
                                 width: 32,
                                 height: 32,

@@ -1,15 +1,22 @@
 import { useSearchParams } from "react-router-dom";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import { useEffect } from "react";
 
 const Pagination = ({ totalPages }) => {
     const [searchParams, setSearchParams] = useSearchParams();
-    const pageFromUrl = parseInt(searchParams.get("page")) || 1; // mặc định 1 nếu không có page
+    const pageFromUrl = parseInt(searchParams.get("page")) || 1;
 
     const handleClick = (page) => {
         if (page < 1 || page > totalPages) return; // tránh vượt giới hạn
         searchParams.set("page", page);
         setSearchParams(searchParams);
     };
+
+    // useEffect(() => {
+    //     console.info("pageFromUrl: ", pageFromUrl)
+    //     console.info("totalPages: ", totalPages)
+    //     console.info("pageFromUrl === totalPages: ", pageFromUrl === totalPages)
+    // }, [pageFromUrl])
 
     return (
         <nav>
@@ -45,7 +52,7 @@ const Pagination = ({ totalPages }) => {
                 })}
 
                 {/* Nút Next */}
-                <li className={`page-item ${pageFromUrl === totalPages ? "disabled" : ""}`}>
+                <li className={`page-item ${pageFromUrl === parseInt(totalPages) ? "disabled" : ""}`}>
                     <button
                         className="page-link"
                         onClick={() => handleClick(pageFromUrl + 1)}

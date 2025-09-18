@@ -19,8 +19,8 @@ const ItemList = ({ items }) => {
         <div className="container">
             <div className="row">
                 {items && items.map((item, index) => (
-                    <div className="col-6">
-                        <div className="container p-3 btn btn-light text-start" onClick={()=>nav(`/job-postings/${item.id}`)}>
+                    <div className="col-12 col-md-6">
+                        <div className="container p-3 btn btn-light text-start" onClick={() => nav(`/job-postings/${item.id}`)}>
                             <div className="row">
                                 <div className="col-6">
                                     <img
@@ -89,29 +89,29 @@ const JobPostingList = ({ }) => {
         <div className="container">
 
             <div className="row p-2">
-                <div className="col-4">
+                <div className="col-12 col-md-4 mb-2">
                     <SearchBox />
                 </div>
-                <div className="col-4">
+                <div className="col-12 col-md-4 mb-2">
                     <ProvinceFilterDropdown />
                 </div>
-                <div className="col-4">
+                <div className="col-12 col-md-4 mb-2">
                     <DistrictFilterDropdown />
                 </div>
             </div>
             <div className="row p-2">
                 <TagFilterButton />
             </div>
+
+            {jobs && jobs.length > 0 ? <ItemList items={jobs} /> : <div className="container">
+                <h3 className="text-muted">Không tìm thấy công việc nào</h3>
+            </div>}
+
             {jobs && jobs.length > 0 && totalPage &&
-                <div className="row justify-content-center">
+                <div className="row justify-content-center mt-2">
                     <Pagination totalPages={totalPage} />
                 </div>}
-
         </div>
-        {jobs && jobs.length > 0 ? <ItemList items={jobs} /> : <div className="container">
-            <h3 className="text-muted">Không tìm thấy công việc nào</h3>
-        </div>}
-
     </>)
 }
 

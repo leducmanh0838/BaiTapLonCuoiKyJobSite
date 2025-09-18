@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import MyGoogleLogin from "./MyGoogleLogin";
 import MySpinner from "../layout/MySpinner";
 import Apis, { endpoints } from "../../configs/Apis"
@@ -20,6 +20,19 @@ const Login = () => {
         client_id: DOT_CLIENT_ID,
         client_secret: DOT_CLIENT_SECRET,
     });
+
+    useEffect(() => {
+        // Lưu style cũ để reset khi unmount
+        const originalBg = document.body.style.background;
+
+        // Đổi background thành linear-gradient
+        document.body.style.background = "linear-gradient(135deg, #667eea, #764ba2)";
+
+        // Reset khi rời trang
+        return () => {
+            document.body.style.background = originalBg;
+        };
+    }, []);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -111,53 +124,78 @@ const Login = () => {
 
     return (
         <div
-            className="d-flex align-items-center justify-content-center"
+            className="container d-flex align-items-center justify-content-center"
             style={{
-                minHeight: "calc(100vh - 70px)", // 60px = chiều cao header
-                background: "linear-gradient(135deg, #667eea, #764ba2)",
+                minHeight: "90vh",
             }}
         >
-            <div className="card p-4 shadow rounded-4" style={{ width: "450px" }}>
-                <h4 className="text-center mb-4 fw-bold">Đăng nhập tài khoản</h4>
 
-                {/* Username */}
-                <div className="mb-3">
-                    <label className="form-label">Tài khoản</label>
-                    <input
-                        type="username"
-                        name="username"
-                        className="form-control"
-                        placeholder="Nhập tài khoản"
-                        value={formData.username}
-                        onChange={handleChange}
-                    />
-                </div>
+            <div className="card shadow rounded-4 col-12 col-md-10">
 
-                {/* Password */}
-                <div className="mb-3">
-                    <label className="form-label">Mật khẩu</label>
-                    <input
-                        type="password"
-                        name="password"
-                        className="form-control"
-                        placeholder="Nhập mật khẩu"
-                        value={formData.password}
-                        onChange={handleChange}
-                    />
-                </div>
-                {loading ? <MySpinner text="Đang đăng nhập..." /> : <>
-                    <button className="btn btn-success w-100 rounded-pill mb-3" onClick={handleSubmitSystemLogin}>
-                        Đăng nhập
-                    </button>
-                    <div class="text-center my-3">
-                        <span class="position-relative top-n1 px-2 bg-white text-muted">hoặc</span>
-                        <hr class="border-1 border-top border-secondary" />
+                <div className="row align-items-center">
+                    <div className="d-none d-md-block col-md-6">
+                        <img
+                            src="/images/banner.png"
+                            alt="Banner"
+                            style={{
+                                width: '100%',
+                                height: '75vh',
+                                objectFit: 'cover'
+                            }}
+                            className="rounded-start"
+                        />
+                    </div>
+                    <div className="p-5 col-md-6 col-12">
+                        <h4 className="text-center mb-4 fw-bold">Đăng nhập tài khoản</h4>
+
+                        {/* Username */}
+                        <div className="mb-3">
+                            <label className="form-label">Tài khoản</label>
+                            <input
+                                type="username"
+                                name="username"
+                                className="form-control"
+                                placeholder="Nhập tài khoản"
+                                value={formData.username}
+                                onChange={handleChange}
+                            />
+                        </div>
+
+                        {/* Password */}
+                        <div className="mb-3">
+                            <label className="form-label">Mật khẩu</label>
+                            <input
+                                type="password"
+                                name="password"
+                                className="form-control"
+                                placeholder="Nhập mật khẩu"
+                                value={formData.password}
+                                onChange={handleChange}
+                            />
+                        </div>
+                        {loading ? <MySpinner text="Đang đăng nhập..." /> : <>
+                            <button className="btn btn-success w-100 rounded-pill mb-3" onClick={handleSubmitSystemLogin}>
+                                Đăng nhập
+                            </button>
+                            <div class="text-center my-3">
+                                <span class="position-relative top-n1 px-2 bg-white text-muted">hoặc</span>
+                                <hr class="border-1 border-top border-secondary" />
+                            </div>
+
+
+                            <MyGoogleLogin submitSocialLogin={hanldeSubmitSocialLogin} />
+                            <FacebookLogin submitSocialLogin={hanldeSubmitSocialLogin} />
+                        </>}
                     </div>
 
-
-                    <MyGoogleLogin submitSocialLogin={hanldeSubmitSocialLogin} />
-                    <FacebookLogin submitSocialLogin={hanldeSubmitSocialLogin} />
-                </>}
+                    {/* <div className="d-none d-md-block col-md-4">
+                        <img
+                            src="/images/banner.png"
+                            alt="Banner"
+                            className="img-fluid rounded-4"
+                        />
+                    </div> */}
+                </div>
             </div>
         </div>
     );

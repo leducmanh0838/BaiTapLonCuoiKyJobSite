@@ -1,12 +1,9 @@
-import React, { useContext, useEffect, useState } from "react";
-import MyGoogleLogin from "./MyGoogleLogin";
+import { useContext, useEffect, useState } from "react";
 import MySpinner from "../layout/MySpinner";
 import Apis, { endpoints } from "../../configs/Apis"
 import { useNavigate } from "react-router-dom";
 import { AppContext } from "../../configs/AppProvider";
-import FacebookLogin from "./FacebookLogin";
 import { toast } from "react-toastify";
-import { DOT_CLIENT_ID, DOT_CLIENT_SECRET } from "../../configs/env";
 import FacebookRegister from "./FacebookRegister";
 import MyGoogleRegister from "./MyGoogleRegister";
 import { UserRole } from "../../constants/UserRole";
@@ -22,6 +19,19 @@ const Register = () => {
     const [typeSocialLogin, setTypeSocialLogin] = useState(null);
     const [accessToken, setAccessToken] = useState(null);
     const [socialInfo, setSocialInfo] = useState(null);
+
+    useEffect(() => {
+        // Lưu style cũ để reset khi unmount
+        const originalBg = document.body.style.background;
+
+        // Đổi background thành linear-gradient
+        document.body.style.background = "linear-gradient(135deg, #667eea, #764ba2)";
+
+        // Reset khi rời trang
+        return () => {
+            document.body.style.background = originalBg;
+        };
+    }, []);
 
     useEffect(() => {
         Object.values(errors).forEach((errMsg) => {
@@ -55,7 +65,10 @@ const Register = () => {
         if (!formData.last_name.trim()) {
             newErrors.last_name = "Tên không được bỏ trống";
         }
-        if (!isStrongPassword(formData.password)) {
+        if (!formData.password.trim()) {
+            newErrors.password = "Mật khẩu không được bỏ trống";
+        }
+        else if (!isStrongPassword(formData.password)) {
             newErrors.password =
                 "Mật khẩu phải ≥ 8 ký tự, gồm chữ hoa, chữ thường, số và ký tự đặc biệt";
         }
@@ -64,7 +77,7 @@ const Register = () => {
         }
 
         setErrors(newErrors);
-        return Object.keys(newErrors).length === 0; // true nếu không có lỗi
+        return Object.keys(newErrors).length === 0;
     };
 
     const handleChange = (e) => {
@@ -95,7 +108,7 @@ const Register = () => {
                 setLoading(true);
                 let res;
                 if (typeSocialLogin === "google") {
-                    res = await Apis.post(endpoints.auth.googleRegister, { idToken: accessToken, role: formData.role, phone: formData.phone}, {
+                    res = await Apis.post(endpoints.auth.googleRegister, { idToken: accessToken, role: formData.role, phone: formData.phone }, {
                         headers: {
                             "Content-Type": "multipart/form-data"
                         }
@@ -202,223 +215,245 @@ const Register = () => {
 
     return (
         <div
-            className="d-flex align-items-center justify-content-center"
+            className="container d-flex align-items-center justify-content-center"
             style={{
-                minHeight: "calc(100vh - 70px)", // 60px = chiều cao header
-                background: "linear-gradient(135deg, #667eea, #764ba2)",
+                minHeight: "90vh",
             }}
         >
-            <div className="card p-4 shadow rounded-4" style={{ width: "800px" }}>
-                <h4 className="text-center mb-4 fw-bold">Đăng ký tài khoản</h4>
-                {!isSocialLogin ? <>
-                    <div className="mb-3 row">
-                        <label className="col-sm-3 col-form-label">Họ:</label>
-                        <div className="col-sm-9">
-                            <input
-                                type="text"
-                                name="last_name"
-                                className="form-control"
-                                placeholder="Nhập họ"
-                                value={formData.last_name}
-                                onChange={handleChange}
-                            />
-                        </div>
+            <div className="card shadow rounded-4 col-12 col-md-12 m-2">
+                <div className="row align-items-center">
+                    <div className="d-none d-md-block col-md-5">
+                        <img
+                            src="/images/banner.png"
+                            alt="Banner"
+                            style={{
+                                width: '100%',
+                                height: '90vh',
+                                objectFit: 'cover'
+                            }}
+                            className="rounded-start"
+                        />
                     </div>
-
-                    <div className="mb-3 row">
-                        <label className="col-sm-3 col-form-label">Tên:</label>
-                        <div className="col-sm-9">
-                            <input
-                                type="text"
-                                name="first_name"
-                                className="form-control"
-                                placeholder="Nhập tên"
-                                value={formData.first_name}
-                                onChange={handleChange}
-                            />
-                        </div>
-                    </div>
-
-                    <div className="mb-3 row">
-                        <label className="col-sm-3 col-form-label">Tài khoản:</label>
-                        <div className="col-sm-9">
-                            <input
-                                type="text"
-                                name="username"
-                                className="form-control"
-                                placeholder="Nhập tài khoản"
-                                value={formData.username}
-                                onChange={handleChange}
-                            />
-                        </div>
-                    </div>
-
-                    <div className="mb-3 row">
-                        <label className="col-sm-3 col-form-label">Email:</label>
-                        <div className="col-sm-9">
-                            <input
-                                type="email"
-                                name="email"
-                                className="form-control"
-                                placeholder="Nhập email"
-                                value={formData.email}
-                                onChange={handleChange}
-                            />
-                        </div>
-                    </div>
-
-                    <div className="mb-3 row">
-                        <label className="col-sm-3 col-form-label">Điện thoại:</label>
-                        <div className="col-sm-9">
-                            <input
-                                type="phone"
-                                name="phone"
-                                className="form-control"
-                                placeholder="Nhập điện thoại"
-                                value={formData.phone}
-                                onChange={handleChange}
-                            />
-                        </div>
-                    </div>
-
-                    <div className="mb-3 row">
-                        <label className="col-sm-3 col-form-label">Mật khẩu:</label>
-                        <div className="col-sm-9">
-                            <input
-                                type="password"
-                                name="password"
-                                className="form-control"
-                                placeholder="Nhập mật khẩu"
-                                value={formData.password}
-                                onChange={handleChange}
-                            />
-                        </div>
-                    </div>
-
-                    <div className="mb-3 row">
-                        <label className="col-sm-3 col-form-label">Xác nhận mật khẩu:</label>
-                        <div className="col-sm-9">
-                            <input
-                                type="password"
-                                name="confirm"
-                                className="form-control"
-                                placeholder="Nhập xác nhận mật khẩu"
-                                value={formData.confirm}
-                                onChange={handleChange}
-                            />
-                        </div>
-                    </div>
-
-                    <div className="mb-3 row">
-                        <label className="col-sm-3 col-form-label">Ảnh đại diện:</label>
-                        <div className="col-sm-9">
-                            <input
-                                type="file"
-                                name="avatar"
-                                className="form-control"
-                                accept="image/*"
-                                onChange={(e) =>
-                                    setFormData({
-                                        ...formData,
-                                        avatar: e.target.files[0], // lấy file
-                                    })
-                                }
-                            />
-
-                            {/* Preview ảnh */}
-                            {formData.avatar && (
-                                <div className="mt-3">
-                                    <img
-                                        src={URL.createObjectURL(formData.avatar)}
-                                        alt="Preview"
-                                        className="img-thumbnail"
-                                        style={{ maxWidth: "200px", height: "auto" }}
+                    <div className="align-items-center col-md-7 px-4 py-2 py-sm-0">
+                        <h4 className="text-center mb-2 fw-bold">Đăng ký tài khoản</h4>
+                        {!isSocialLogin ? <>
+                            <div className="mb-2 row">
+                                <label className="col-sm-3 col-form-label">Họ:</label>
+                                <div className="col-sm-9">
+                                    <input
+                                        type="text"
+                                        name="last_name"
+                                        className="form-control"
+                                        placeholder="Nhập họ"
+                                        value={formData.last_name}
+                                        onChange={handleChange}
                                     />
                                 </div>
-                            )}
-                        </div>
-                    </div>
-                </> : <>
-                    <div className="row align-items-center my-3">
-                        <div className="col-2">
-                            <MyAvatar src={socialInfo.avatar} size={120} />
-                        </div>
-                        <div className="col-9">
-                            <h2>
-                                {socialInfo.last_name} {socialInfo.first_name}
-                            </h2>
-                            <p className="fs-5">
-                                {socialInfo.email}
-                            </p>
-                        </div>
-                    </div>
+                            </div>
 
-                    <div className="mb-3 row">
-                        <label className="col-sm-3 col-form-label">Điện thoại:</label>
-                        <div className="col-sm-9">
-                            <input
-                                type="phone"
-                                name="phone"
-                                className="form-control"
-                                placeholder="Nhập điện thoại"
-                                value={formData.phone}
-                                onChange={handleChange}
-                            />
-                        </div>
-                    </div>
-                </>}
+                            <div className="mb-2 row">
+                                <label className="col-sm-3 col-form-label">Tên:</label>
+                                <div className="col-sm-9">
+                                    <input
+                                        type="text"
+                                        name="first_name"
+                                        className="form-control"
+                                        placeholder="Nhập tên"
+                                        value={formData.first_name}
+                                        onChange={handleChange}
+                                    />
+                                </div>
+                            </div>
 
-                <div className="mb-3 row">
-                    <label className="col-sm-3 col-form-label">Chọn vai trò:</label>
-                    <div className="col-sm-9 d-flex align-items-center">
-                        <div className="form-check me-3">
-                            <input
-                                className="form-check-input"
-                                type="radio"
-                                name="role"
-                                id="candidate"
-                                value="CANDIDATE"
-                                checked={formData.role === UserRole.CANDIDATE.value}
-                                onChange={handleChange}
-                            />
-                            <label className="form-check-label" htmlFor="candidate">
-                                {UserRole.CANDIDATE.label}
-                            </label>
+                            <div className="mb-2 row">
+                                <label className="col-sm-3 col-form-label">Tài khoản:</label>
+                                <div className="col-sm-9">
+                                    <input
+                                        type="text"
+                                        name="username"
+                                        className="form-control"
+                                        placeholder="Nhập tài khoản"
+                                        value={formData.username}
+                                        onChange={handleChange}
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="mb-2 row">
+                                <label className="col-sm-3 col-form-label">Email:</label>
+                                <div className="col-sm-9">
+                                    <input
+                                        type="email"
+                                        name="email"
+                                        className="form-control"
+                                        placeholder="Nhập email"
+                                        value={formData.email}
+                                        onChange={handleChange}
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="mb-2 row">
+                                <label className="col-sm-3 col-form-label">Điện thoại:</label>
+                                <div className="col-sm-9">
+                                    <input
+                                        type="phone"
+                                        name="phone"
+                                        className="form-control"
+                                        placeholder="Nhập điện thoại"
+                                        value={formData.phone}
+                                        onChange={handleChange}
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="mb-2 row">
+                                <label className="col-sm-3 col-form-label">Mật khẩu:</label>
+                                <div className="col-sm-9">
+                                    <input
+                                        type="password"
+                                        name="password"
+                                        className="form-control"
+                                        placeholder="Nhập mật khẩu"
+                                        value={formData.password}
+                                        onChange={handleChange}
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="mb-2 row">
+                                <label className="col-sm-3 col-form-label">Xác nhận mật khẩu:</label>
+                                <div className="col-sm-9">
+                                    <input
+                                        type="password"
+                                        name="confirm"
+                                        className="form-control"
+                                        placeholder="Nhập xác nhận mật khẩu"
+                                        value={formData.confirm}
+                                        onChange={handleChange}
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="mb-2 row align-items-center">
+                                <label className="col-sm-3 col-form-label">Ảnh đại diện:</label>
+                                <div className="col-sm-9">
+                                    <div className="row align-items-center">
+                                        <div className="col-sm-9">
+                                            <input
+                                                type="file"
+                                                name="avatar"
+                                                className="form-control"
+                                                accept="image/*"
+                                                onChange={(e) =>
+                                                    setFormData({ ...formData, avatar: e.target.files[0] })
+                                                }
+                                            />
+                                        </div>
+
+                                        {formData.avatar && (
+                                            <div className="col-sm-3 d-flex align-items-center">
+                                                {/* d-block d-md-none */}
+                                                <MyAvatar className="d-none d-sm-block" src={URL.createObjectURL(formData.avatar)} size={50} />
+                                                <MyAvatar className="d-block d-sm-none m-3" src={URL.createObjectURL(formData.avatar)} size={150} />
+                                                {/* <img
+                                                    src={URL.createObjectURL(formData.avatar)}
+                                                    alt="Preview"
+                                                    // className="img-thumbnail"
+                                                    style={{ maxWidth: "60px", height: "60px" }}
+                                                /> */}
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
+                        </> : <>
+                            <div className="row align-items-center my-2">
+                                <div className="col-12 col-md-4 d-flex justify-content-center">
+                                    <MyAvatar src={socialInfo.avatar} size={120} />
+                                </div>
+                                <div className="col-12 col-md-8 d-flex flex-column justify-content-center align-items-center">
+                                    <h2 className="fs-1 fs-md-2 fs-lg-3">
+                                        {socialInfo.last_name} {socialInfo.first_name}
+                                    </h2>
+                                    <p className="fs-5 fs-md-4 fs-lg-3">
+                                        {socialInfo.email}
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div className="mb-2 row">
+                                <label className="col-sm-3 col-form-label">Điện thoại:</label>
+                                <div className="col-sm-9">
+                                    <input
+                                        type="phone"
+                                        name="phone"
+                                        className="form-control"
+                                        placeholder="Nhập điện thoại"
+                                        value={formData.phone}
+                                        onChange={handleChange}
+                                    />
+                                </div>
+                            </div>
+                        </>}
+
+                        <div className="mb-2 row">
+                            <label className="col-sm-3 col-form-label">Chọn vai trò:</label>
+                            <div className="col-sm-9 d-flex align-items-center">
+                                <div className="form-check me-3">
+                                    <input
+                                        className="form-check-input"
+                                        type="radio"
+                                        name="role"
+                                        id="candidate"
+                                        value="CANDIDATE"
+                                        checked={formData.role === UserRole.CANDIDATE.value}
+                                        onChange={handleChange}
+                                    />
+                                    <label className="form-check-label" htmlFor="candidate">
+                                        {UserRole.CANDIDATE.label}
+                                    </label>
+                                </div>
+                                <div className="form-check">
+                                    <input
+                                        className="form-check-input"
+                                        type="radio"
+                                        name="role"
+                                        id="employer"
+                                        value="EMPLOYER"
+                                        checked={formData.role === UserRole.EMPLOYER.value}
+                                        onChange={handleChange}
+                                    />
+                                    <label className="form-check-label" htmlFor="employer">
+                                        {UserRole.EMPLOYER.label}
+                                    </label>
+                                </div>
+                            </div>
                         </div>
-                        <div className="form-check">
-                            <input
-                                className="form-check-input"
-                                type="radio"
-                                name="role"
-                                id="employer"
-                                value="EMPLOYER"
-                                checked={formData.role === UserRole.EMPLOYER.value}
-                                onChange={handleChange}
-                            />
-                            <label className="form-check-label" htmlFor="employer">
-                                {UserRole.EMPLOYER.label}
-                            </label>
-                        </div>
+
+
+                        {/* Button Login */}
+                        {loading ? <MySpinner text="Đang đăng ký..." /> : <>
+
+                            <button className="btn btn-success w-100 rounded-pill mb-2" onClick={handleSubmitSystemRegister}>
+                                Đăng ký
+                            </button>
+                            {!isSocialLogin && <>
+                                <div class="text-center my-1">
+                                    <span class="position-relative top-n1 px-2 bg-white text-muted">hoặc</span>
+                                    <hr class="border-1 border-top border-secondary" />
+                                </div>
+                                {/* Google Login */}
+
+                                <MyGoogleRegister submitSocialRegister={hanldeSubmitSocialRegister} />
+                                <FacebookRegister submitSocialRegister={hanldeSubmitSocialRegister} />
+
+                            </>}
+
+                        </>}
+
                     </div>
                 </div>
-
-
-                {/* Button Login */}
-                <button className="btn btn-success w-100 rounded-pill mb-3" onClick={handleSubmitSystemRegister}>
-                    Đăng ký
-                </button>
-                {!isSocialLogin && <>
-                    <div class="text-center my-1">
-                        <span class="position-relative top-n1 px-2 bg-white text-muted">hoặc</span>
-                        <hr class="border-1 border-top border-secondary" />
-                    </div>
-                    {/* Google Login */}
-                    {loading ? <MySpinner text="Đang đăng nhập..." /> : <>
-                        <MyGoogleRegister submitSocialRegister={hanldeSubmitSocialRegister} />
-                        <FacebookRegister submitSocialRegister={hanldeSubmitSocialRegister} />
-                    </>}
-                </>}
-
             </div>
         </div>
     );
