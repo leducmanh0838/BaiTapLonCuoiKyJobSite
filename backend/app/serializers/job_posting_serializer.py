@@ -124,8 +124,9 @@ class JobPostingApplicationSerializer(serializers.ModelSerializer):
             "cv_file",
             "is_cancel",
             "status",
+            "is_read",
         ]
-        read_only_fields = ["id", "job_posting", "cv", "is_cancel"]
+        read_only_fields = ["id", "job_posting", "cv", "is_cancel", "is_read"]
 
     def get_cv_file(self, obj):
         request = self.context.get("request")

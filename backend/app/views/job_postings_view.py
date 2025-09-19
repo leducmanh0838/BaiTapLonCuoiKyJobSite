@@ -44,6 +44,7 @@ class JobPostingViewSet(mixins.ListModelMixin,
 
         keyword = self.request.query_params.get("keyword")
         city_code = self.request.query_params.get("city_code")
+        district_code = self.request.query_params.get("district_code")
         owner_id = self.request.query_params.get("owner_id")
         tags = self.request.query_params.getlist("tags")
 
@@ -52,6 +53,8 @@ class JobPostingViewSet(mixins.ListModelMixin,
             queryset = queryset.filter(id__in=ids)
         if city_code:
             queryset = queryset.filter(city_code=city_code)
+        if district_code:
+            queryset = queryset.filter(district_code=district_code)
         if owner_id:
             queryset = queryset.filter(owner_id=owner_id)
         if tags:

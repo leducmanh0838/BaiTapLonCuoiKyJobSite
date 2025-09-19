@@ -25,7 +25,7 @@ class CVViewSet(mixins.ListModelMixin,
             return [IsAuthenticated()]
 
     def get_queryset(self):
-        return CV.objects.filter(owner=self.request.user)
+        return CV.objects.filter(owner=self.request.user).order_by("-id")
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)

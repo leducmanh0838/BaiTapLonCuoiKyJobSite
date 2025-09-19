@@ -3,18 +3,19 @@ import { Button, Card, Row, Col, Spinner, Badge } from "react-bootstrap";
 import { AppContext } from "../../configs/AppProvider";
 import Apis, { authApis, endpoints } from "../../configs/Apis";
 import { getProvinceNameByCode } from "../../constants/Provinces";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { 
-  PlusLg, 
-  PencilSquare, 
-  Trash3, 
-  GeoAltFill, 
-  CashStack, 
-  BriefcaseFill, 
+import {
+  PlusLg,
+  PencilSquare,
+  Trash3,
+  GeoAltFill,
+  CashStack,
+  BriefcaseFill,
   Building,
   BoxSeam
 } from "react-bootstrap-icons";
+import Pagination from "../layout/Pagination";
 
 /* RECOMMENDATION: Để có trải nghiệm tốt nhất với hiệu ứng hover,
   bạn hãy thêm đoạn CSS sau vào file CSS chung của dự án (ví dụ: App.css)
@@ -34,6 +35,10 @@ const JobPostingsManagement = () => {
   const { currentUser } = useContext(AppContext);
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(false);
+
+  const [totalPage, setTotalPage] = useState(null);
+  const location = useLocation();
+
   const nav = useNavigate();
 
   useEffect(() => {
@@ -41,21 +46,22 @@ const JobPostingsManagement = () => {
       if (!currentUser?.id) return;
       setLoading(true);
       try {
-        const res = await Apis.get(
-          `${endpoints.jobPostings.list}?owner_id=${currentUser.id}`
+        const res = await authApis().get(
+          `${endpoints.employer.jobPostings.list}${location.search}`
         );
         // Giả lập thời gian tải để thấy hiệu ứng loading skeleton
         setTimeout(() => {
-            setJobs(res.data.results || res.data || []);
-            setLoading(false);
-        }, 1000); 
+          setJobs(res.data.results || res.data || []);
+          setTotalPage(res.data.count / (10) + 1)
+          setLoading(false);
+        }, 1000);
       } catch (err) {
         setJobs([]);
         setLoading(false);
       }
     };
     fetchJobs();
-  }, [currentUser]);
+  }, [currentUser, location.search]);
 
   const handleDelete = async (job) => {
     if (!window.confirm(`Bạn có chắc chắn muốn xoá tin "${job.title}"?`))
@@ -68,7 +74,7 @@ const JobPostingsManagement = () => {
       toast.error("Xoá thất bại!");
     }
   };
-  
+
   // Component cho trạng thái loading đẹp mắt hơn
   const LoadingSkeleton = () => (
     Array.from({ length: 4 }).map((_, index) => (
@@ -76,7 +82,7 @@ const JobPostingsManagement = () => {
         <Card className="h-100 shadow-sm border-0 placeholder-glow">
           <Row className="g-0">
             <Col md={4}>
-              <div className="w-100 h-100 placeholder" style={{minHeight: "180px", borderTopLeftRadius: "0.375rem", borderBottomLeftRadius: "0.375rem"}}></div>
+              <div className="w-100 h-100 placeholder" style={{ minHeight: "180px", borderTopLeftRadius: "0.375rem", borderBottomLeftRadius: "0.375rem" }}></div>
             </Col>
             <Col md={8}>
               <Card.Body className="d-flex flex-column">
@@ -85,7 +91,7 @@ const JobPostingsManagement = () => {
                 <div className="placeholder col-5 mb-2 rounded"></div>
                 <div className="placeholder col-7 mb-2 rounded"></div>
                 <div className="mt-auto d-grid">
-                    <Button variant="primary" disabled className="placeholder w-100"></Button>
+                  <Button variant="primary" disabled className="placeholder w-100"></Button>
                 </div>
               </Card.Body>
             </Col>
@@ -98,21 +104,21 @@ const JobPostingsManagement = () => {
   // Component cho trạng thái không có tin tuyển dụng
   const EmptyState = () => (
     <Col xs={12}>
-        <div className="text-center p-5 bg-light rounded-3">
-            <BoxSeam size={60} className="text-muted mb-3" />
-            <h3 className="fw-bold">Chưa có tin tuyển dụng nào</h3>
-            <p className="text-muted">
-                Hãy bắt đầu tạo tin tuyển dụng đầu tiên của bạn để tìm kiếm ứng viên tiềm năng.
-            </p>
-            <Button
-                variant="primary"
-                onClick={() => nav("/employer/job-postings/new")}
-                className="mt-3"
-            >
-                <PlusLg className="me-2" />
-                Tạo tin tuyển dụng mới
-            </Button>
-        </div>
+      <div className="text-center p-5 bg-light rounded-3">
+        <BoxSeam size={60} className="text-muted mb-3" />
+        <h3 className="fw-bold">Chưa có tin tuyển dụng nào</h3>
+        <p className="text-muted">
+          Hãy bắt đầu tạo tin tuyển dụng đầu tiên của bạn để tìm kiếm ứng viên tiềm năng.
+        </p>
+        <Button
+          variant="primary"
+          onClick={() => nav("/employer/job-postings/new")}
+          className="mt-3"
+        >
+          <PlusLg className="me-2" />
+          Tạo tin tuyển dụng mới
+        </Button>
+      </div>
     </Col>
   );
 
@@ -145,10 +151,10 @@ const JobPostingsManagement = () => {
                       src={job.image || "https://via.placeholder.com/150?text=Logo"}
                       alt={job.title}
                       className="img-fluid rounded"
-                      style={{ 
-                        maxHeight: "140px", 
+                      style={{
+                        maxHeight: "140px",
                         maxWidth: "140px",
-                        objectFit: "contain" 
+                        objectFit: "contain"
                       }}
                     />
                   </Col>
@@ -157,26 +163,26 @@ const JobPostingsManagement = () => {
                       <div>
                         <Card.Title className="fw-bold fs-5 mb-3">{job.title || job.name}</Card.Title>
                         <div className="d-flex align-items-center text-muted mb-2">
-                            <CashStack className="me-2" /> 
-                            Lương: <b className="ms-1 text-dark">{job.salary ? `${job.salary.toLocaleString()} VNĐ` : "Thỏa thuận"}</b>
+                          <CashStack className="me-2" />
+                          Lương: <b className="ms-1 text-dark">{job.salary ? `${job.salary.toLocaleString()} VNĐ` : "Thỏa thuận"}</b>
                         </div>
                         <div className="d-flex align-items-center text-muted mb-2">
-                            <BriefcaseFill className="me-2" /> 
-                            Kinh nghiệm: <b className="ms-1 text-dark">{job.experience || "Không yêu cầu"}</b>
+                          <BriefcaseFill className="me-2" />
+                          Kinh nghiệm: <b className="ms-1 text-dark">{job.experience || "Không yêu cầu"}</b>
                         </div>
                         <div className="d-flex align-items-center text-muted">
-                            <GeoAltFill className="me-2" /> 
-                            Khu vực: <b className="ms-1 text-dark">{getProvinceNameByCode(job.city_code) || "Toàn quốc"}</b>
+                          <GeoAltFill className="me-2" />
+                          Khu vực: <b className="ms-1 text-dark">{getProvinceNameByCode(job.city_code) || "Toàn quốc"}</b>
                         </div>
                       </div>
 
                       <div className="mt-auto pt-3 d-flex justify-content-between align-items-center">
                         <Button
                           variant="dark"
-                          className="w-50"
+                          className="w-auto p-2"
                           onClick={() => nav(`/employer/job-postings/${job.id}/applications`)}
                         >
-                          Xem hồ sơ ứng tuyển
+                          Các hồ sơ {job.unread_applications_count > 0 && `(${job.unread_applications_count} đơn chưa đọc)`}
                         </Button>
                         <div className="d-flex gap-2">
                           <Button
@@ -205,6 +211,9 @@ const JobPostingsManagement = () => {
           ))
         )}
       </Row>
+      {totalPage && <div className="mt-4">
+        <Pagination totalPages={totalPage} />
+      </div>}
     </div>
   );
 };

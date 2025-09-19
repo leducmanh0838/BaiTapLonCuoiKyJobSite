@@ -130,7 +130,7 @@ const CvManager = () => {
 
   return (
     <Container className="mt-3 mb-3">
-      <h3 className="mb-3">Trang quản lý các CV của ứng viên</h3>
+      <h3 className="mb-3">Quản lý các CV</h3>
 
       <div className="mb-4 d-flex gap-2">
         <Button

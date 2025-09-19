@@ -14,6 +14,8 @@ import {
   FaClock,
 } from "react-icons/fa";
 import GridTagList from "../layout/tags/GridTagList";
+import { getProvinceNameByCode } from "../../constants/Provinces";
+import BackButton from "../layout/BackButton";
 
 const JobPostingDetail = () => {
   const { id } = useParams();
@@ -53,6 +55,7 @@ const JobPostingDetail = () => {
 
   return (
     <div className="container py-4">
+      <BackButton />
       <Row className="g-4 align-items-start">
         <Col md={5} className="text-center">
           <img
@@ -88,15 +91,15 @@ const JobPostingDetail = () => {
           </div>
           <div className="mb-1 d-flex align-items-center gap-2">
             <FaCity className="text-primary" />
-            <span className="fw-bold">Thành phố:</span> {job.city_code}
+            <span className="fw-bold">Thành phố:</span> {getProvinceNameByCode(job.city_code)}
           </div>
-          <div className="mb-1 d-flex align-items-center gap-2">
+          {/* <div className="mb-1 d-flex align-items-center gap-2">
             <FaClock className="text-warning" />
             <span className="fw-bold">Ngày đăng bài:</span>{" "}
             {job.created_at ? new Date(job.created_at).toLocaleString() : "-"}
-          </div>
+          </div> */}
           <div className="mb-1 d-flex align-items-center gap-2">
-            <FaCalendarAlt className="text-primary" />
+            <FaClock className="text-primary" />
             <span className="fw-bold">Ngày hết hạn nộp:</span>{" "}
             {job.deadline ? new Date(job.deadline).toLocaleString() : "-"}
           </div>

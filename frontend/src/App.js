@@ -21,6 +21,7 @@ import JobPostingDetail from './components/JobPostings/JobPostingDetail';
 import JobApplicationForm from './components/JobPostings/JobApplicationForm';
 import AutoCvPage from './components/Cv/AutoCV/AutoCvPage';
 import ApplicationMessage from './components/JobPostings/ApplicationMessage';
+import SideBar from './components/layout/SideBar';
 const App = () => {
 
   return (
@@ -38,6 +39,8 @@ const App = () => {
             draggable
             pauseOnHover
           />
+
+          <SideBar />
 
           {/* Main Content */}
           <div className="flex-grow-1 ms-0 ms-md-1" style={{ marginLeft: '0px' }}>

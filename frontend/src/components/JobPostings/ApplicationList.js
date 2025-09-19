@@ -60,6 +60,15 @@ function ApplicationList() {
     REJECTED: "danger",
   };
 
+  const markRead = async (appId) => {
+    try{
+      const res = await authApis().patch(endpoints.jobPostings.applications.markRead(id, appId));
+      console.info("Thành công!!");
+    }catch(err){
+      console.info("Lỗi");
+    }
+  }
+
   return (
     <div className="container mt-4">
       <Card className="shadow border-0 rounded-3">
@@ -116,6 +125,7 @@ function ApplicationList() {
                             <FaUserCircle size={45} className="text-secondary" />
                           )}
                           <span className="fw-semibold">{fullName}</span>
+                          {!(app.is_read) && "(Chưa đọc)"}
                         </div>
                       </td>
 
@@ -126,7 +136,10 @@ function ApplicationList() {
                           variant="outline-primary"
                           className="d-flex align-items-center gap-1 mx-auto"
                           title="Xem CV ứng viên"
-                          onClick={() => window.open(app.cv_file, "_blank")}
+                          onClick={() => {
+                            markRead(app.id);
+                            window.open(app.cv_file, "_blank");
+                          }}
                         >
                           <FaFileAlt /> CV
                         </Button>
@@ -176,8 +189,7 @@ function ApplicationList() {
                                           )
                                         );
                                         toast.success(
-                                          `Cập nhật trạng thái: ${
-                                            statusObj?.label || st
+                                          `Cập nhật trạng thái: ${statusObj?.label || st
                                           }`
                                         );
                                       } catch (err) {

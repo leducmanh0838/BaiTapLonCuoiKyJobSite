@@ -3,19 +3,27 @@ import { authApis, endpoints } from "../../configs/Apis";
 import { getApplicationStatusByValue } from "../../constants/ApplicationStatus";
 import { Button, Spinner, Row, Col, Card } from "react-bootstrap";
 import { FaCalendarAlt, FaCircle } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import Pagination from "../layout/Pagination";
 
 const ApplicationManagement = () => {
   const [applications, setApplications] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [totalPage, setTotalPage] = useState(null);
   const nav = useNavigate();
+  const location = useLocation();
 
   const loadApplications = async () => {
     setLoading(true);
     try {
       const api = authApis();
-      const res = await api.get(endpoints.applications.list);
+      const res = await api.get(
+        // endpoints.applications.list
+        `${endpoints.applications.list}${location.search}`
+      );
       setApplications(res.data.results || []);
+      setTotalPage(res.data.count / (10) + 1)
     } catch (err) {
       setApplications([]);
     }
@@ -24,7 +32,7 @@ const ApplicationManagement = () => {
 
   useEffect(() => {
     loadApplications();
-  }, []);
+  }, [location.search]);
 
   if (loading) {
     return (
@@ -33,6 +41,19 @@ const ApplicationManagement = () => {
       </div>
     );
   }
+
+  const cancelApplication = async (id) => {
+    if (!window.confirm("Bạn có chắc muốn hủy đơn ứng tuyển này?")) return;
+    try {
+      await authApis().patch(endpoints.applications.detail(id), {
+        "is_cancel": true
+      });
+      toast.success("hủy thành công!");
+      loadApplications();
+    } catch (err) {
+      toast.error("hủy thất bại!");
+    }
+  };
 
   return (
     <div className="container py-4">
@@ -96,6 +117,7 @@ const ApplicationManagement = () => {
                           disabled={app.is_cancel}
                           className="rounded-pill px-4 fw-bold shadow-sm"
                           style={{ fontSize: 15, borderWidth: 2 }}
+                          onClick={() => cancelApplication(app.id)}
                         >
                           Hủy ứng tuyển
                         </Button>
@@ -107,7 +129,11 @@ const ApplicationManagement = () => {
             );
           })
         )}
+
       </Row>
+      {totalPage && <div className="mt-4">
+        <Pagination totalPages={totalPage} />
+      </div>}
     </div>
   );
 };
