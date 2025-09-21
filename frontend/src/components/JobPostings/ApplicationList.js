@@ -61,10 +61,10 @@ function ApplicationList() {
   };
 
   const markRead = async (appId) => {
-    try{
+    try {
       const res = await authApis().patch(endpoints.jobPostings.applications.markRead(id, appId));
       console.info("Thành công!!");
-    }catch(err){
+    } catch (err) {
       console.info("Lỗi");
     }
   }
@@ -120,6 +120,10 @@ function ApplicationList() {
                               className="rounded-circle border border-2"
                               width={45}
                               height={45}
+                              onError={(e) => {
+                                e.target.onerror = null;
+                                e.target.src = "/images/default_avatar.jpg"; // đường dẫn avatar mặc định
+                              }}
                             />
                           ) : (
                             <FaUserCircle size={45} className="text-secondary" />

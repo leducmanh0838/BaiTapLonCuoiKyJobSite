@@ -137,13 +137,13 @@ const CvManager = () => {
           variant="primary"
           onClick={() => navigate("/cvs/new")}
         >
-          Thêm CV mới của bạn
+          Thêm CV mới
         </Button>
         <Button
           variant="success"
           onClick={() => navigate("/auto-cv")}
         >
-          CV Generation
+          Tạo CV tự động
         </Button>
       </div>
 

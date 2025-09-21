@@ -125,7 +125,7 @@ const JobPostingsManagement = () => {
   return (
     <div className="container py-5">
       <div className="d-flex justify-content-between align-items-center mb-5">
-        <h1 className="fw-bold display-6">Quản lý tin tuyển dụng</h1>
+        {/* <h1 className="fw-bold display-6">Quản lý tin tuyển dụng</h1> */}
         <Button
           variant="primary"
           size="lg"
